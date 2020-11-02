@@ -1,0 +1,10 @@
+user:
+  login: owpk
+  password: 178UeeE34+
+  twofa_code:
+  remember: true
+
+farm_id: 277869
+
+walletNames:
+  - ethkraken
