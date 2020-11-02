@@ -1,6 +1,9 @@
 package org.owpk.utils;
 
 import org.yaml.snakeyaml.Yaml;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class Resources {
@@ -22,6 +25,14 @@ public class Resources {
                 .getClassLoader()
                 .getResourceAsStream(yamlTarget);
         return new Yaml().load(in);
+    }
+
+    public static <T> void write(T obj, String resourceName) {
+        try(FileWriter writer = new FileWriter(resourceName)) {
+            new Yaml().dump(obj, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String getTARGET() {

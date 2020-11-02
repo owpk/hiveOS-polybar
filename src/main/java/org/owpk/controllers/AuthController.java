@@ -15,10 +15,10 @@ public class AuthController implements Controller {
                 .asJson();
     }
 
-    public HttpResponse<JsonNode> postRequest(String resource, String userJson) throws UnirestException {
+    public HttpResponse<JsonNode> postRequest(String resource, String json) throws UnirestException {
         return Unirest.post(Resources.getTARGET() + resource)
                 .header("Content-Type","application/json")
-                .body(userJson)
+                .body(json)
                 .asJson();
     }
 }
