@@ -8,6 +8,8 @@ import org.owpk.module.CurrentModule;
 import org.owpk.utils.Resources;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -26,12 +28,13 @@ public class App {
     }
 
     public static void main(String[] args) throws IOException, UnirestException {
-        UserDetails userDetails = Resources.read("cfg.yaml", UserDetails.class);
-        polybar = new CurrentModule(userDetails);
+        polybar = new CurrentModule();
 
         switch (args[0]) {
             case "-a":
-                polybar.authRequest();
+                UserDetails userDetails = interactiveAuth();
+                Resources.write(userDetails, Resources.USER_DETAILS_CONFIG);
+                polybar.authRequest(userDetails);
                 break;
             case "-w":
                 polybar.walletRequest();
@@ -39,7 +42,7 @@ public class App {
         }
     }
 
-    public static User interactiveAuth() {
+    public static UserDetails interactiveAuth() {
         User user = new User();
         Scanner sc = new Scanner(System.in);
 
@@ -56,8 +59,10 @@ public class App {
         user.setPassword(password);
         user.setTwofa_code(twoAuth);
 
-        Resources.write(user, "cfg.yaml");
-        return user;
+        UserDetails userDetails = new UserDetails();
+        userDetails.setUser(user);
+
+        return userDetails;
     }
 
 }

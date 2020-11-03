@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Resources {
+    public static final String USER_DETAILS_CONFIG = "cfg.yaml";
     private static final String PROTOCOL = "https://";
     private static final String HOST = "api2.hiveos.farm";
     private static final String BASE_PATH = "/api/v2";

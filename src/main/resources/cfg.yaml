@@ -1,7 +1,7 @@
 user:
   login: owpk
   password: 178UeeE34+
-  twofa_code:
+  twofa_code: 998690
   remember: true
 
 farm_id: 277869

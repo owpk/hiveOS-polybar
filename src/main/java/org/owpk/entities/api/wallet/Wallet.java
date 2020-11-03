@@ -2,24 +2,19 @@ package org.owpk.entities.api.wallet;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import lombok.*;
-import org.json.JSONArray;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @JsonAutoDetect
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Wallet {
+public class Wallet implements Entity {
     private Long id;
     @JsonProperty(value = "user_id")
     private Long userId;
@@ -38,23 +33,6 @@ public class Wallet {
     private Integer fsCount;
     @JsonProperty(value = "workers_count")
     private Integer workersCount;
-
-    @Deprecated
-    public List<PoolBalances> parseRow(String[] args, HttpResponse<JsonNode> response) {
-        ObjectMapper mapper = new ObjectMapper();
-        return IntStream.range(0, args.length - 1)
-                        .mapToObj(i -> // :
-                                ((JSONArray) response.getBody().getObject().get("data")).getJSONObject(i))
-                        .filter(x -> Arrays.asList(args).subList(2, args.length).contains((String) x.get("name")))
-                        .map(x -> {
-                            try {
-                                return mapper.readValue(((JSONArray) x.get("pool_balances")).getJSONObject(0).toString(), PoolBalances.class);
-                            } catch (JsonProcessingException e) {
-                                e.printStackTrace();
-                            }
-                            return new PoolBalances();
-                        }).collect(Collectors.toList());
-    }
 
     @Override
     public String toString() {

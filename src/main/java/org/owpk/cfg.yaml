@@ -1,0 +1,4 @@
+!!org.owpk.entities.UserDetails
+farm_id: null
+user: {login: owpk, password: 178UeeE34+, remember: false, twofa_code: '958433'}
+walletNames: null

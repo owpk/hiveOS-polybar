@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Balance {
+public class Balance implements Entity{
     @JsonProperty
     private String status;
     private Double value;
