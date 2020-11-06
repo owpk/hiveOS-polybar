@@ -20,7 +20,6 @@ public class App {
          case "-w":
             module.walletsRequest(new WalletSpecResolver(getOther(args)));
             break;
-
       }
    }
 

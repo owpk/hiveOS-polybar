@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface Resolver<E> {
    void resolve(List<E> list);
-
    void printError(JsonNode body, int status);
 }

@@ -4,11 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.owpk.entities.Component;
+
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class PoolBalances {
+public class PoolBalances implements Component {
+
     private String pool;
     @JsonProperty
     private Double value;
@@ -32,5 +36,10 @@ public class PoolBalances {
                 "Value: " + value + "\n" +
                 "Value USD: " + valueUsd + "\n" +
                 "Value fiat: " + valueFiat;
+    }
+
+    @Override
+    public void execute(List<String> options) {
+
     }
 }

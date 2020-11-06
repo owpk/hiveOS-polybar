@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.owpk.controllers.AuthController;
 import org.owpk.controllers.Controller;
 import org.owpk.controllers.WalletController;
+import org.owpk.entities.Component;
 import org.owpk.entities.api.auth.User;
 import org.owpk.entities.api.wallet.Wallet;
 import org.owpk.resolver.Resolver;
@@ -44,14 +45,14 @@ public class CurrentModule implements Module {
     }
 
     @Override
-    public void walletsRequest(Resolver<Wallet> resolver) throws UnirestException {
+    public void walletsRequest(Resolver<Component> resolver) throws UnirestException {
         if (tokenManager.checkIfExpired()) {
             HttpResponse<JsonNode> response = wallet.getRequest(
                    "/farms/" + properties.getProperty("farmId") + "/wallets",
                    tokenManager.getToken());
 
             if (response.getStatus() == 200) {
-                List<Wallet> wallets = new ArrayList<>();
+                List<Component> wallets = new ArrayList<>();
                 for (Object o : (JSONArray) response.getBody().getObject().get("data")) {
                     Wallet w = JsonMapper.readFromJson(((JSONObject) o).toString(), Wallet.class);
                     wallets.add(w);

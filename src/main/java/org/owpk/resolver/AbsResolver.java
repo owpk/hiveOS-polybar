@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public abstract class AbsResolver<E> implements Resolver<E> {
+
    protected String[] args;
    protected CommandLine cmd;
 

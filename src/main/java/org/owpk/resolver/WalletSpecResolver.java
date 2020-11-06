@@ -2,6 +2,8 @@ package org.owpk.resolver;
 
 
 import com.mashape.unirest.http.JsonNode;
+import org.owpk.entities.Component;
+import org.owpk.entities.Composite;
 import org.owpk.entities.api.wallet.Wallet;
 import picocli.CommandLine;
 
@@ -9,48 +11,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class WalletSpecResolver extends AbsResolver<Wallet> {
+public class WalletSpecResolver extends AbsResolver<Component> {
 
-   @CommandLine.Option(names = { "-n", "--names"},
-          paramLabel = "SPECIFICATIONS",
-          description = "wallet specification")
-   private String walletNames;
-
-   @CommandLine.Option(names = {"-c", "--coin"},
+   @CommandLine.Option(names = {"-f", "--filter"},
           paramLabel = "FILTER",
           description = "wallet specification")
    private String coinNames;
-
-   @CommandLine.Option(names = {"-v", "--value"},
-          paramLabel = "FILTER",
-          description = "wallet specification")
-   private String values;
 
    public WalletSpecResolver(String[] args) {
       super(args);
    }
 
    @Override
-   public void resolve(List<Wallet> list) {
+   public void resolve(List<Component> list) {
       CommandLine.ParseResult parseResult = new CommandLine(this).parseArgs(args);
-      if (checkIfEmpty(walletNames)) {
-         final List<String> options = parseOptions(walletNames, ",");
-         list.removeIf(x -> !options.contains(x.getName()));
-      }
-      if (checkIfEmpty(coinNames)) {
-         final List<String> options = parseOptions(coinNames, ",");
-         list.removeIf(x -> !options.contains(x.getCoin()));
-      }
-
-      if (checkIfEmpty(values)) {
-         final List<String> options = parseOptions(values, ",");
-//         List<Map<Object, Object>> mapList = convert(list);
-
-         return;
-      }
-      list.forEach(System.out::println);
+      List<String> options = parseOptions(coinNames, ",");
+      Composite composite = new Composite(list);
+      composite.execute(options);
    }
-
 
    private boolean checkIfEmpty(String options) {
       return options != null && !options.isBlank();

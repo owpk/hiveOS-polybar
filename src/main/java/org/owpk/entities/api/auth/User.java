@@ -3,7 +3,6 @@ package org.owpk.entities.api.auth;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.*;
 
-
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor

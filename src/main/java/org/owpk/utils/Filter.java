@@ -15,8 +15,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
-* Fully replaced by {@link org.owpk.resolver.Resolver}
-*/
+ * Completely deprecated!!
+ * Fully replaced by {@link org.owpk.resolver.Resolver}
+ */
 public class Filter {
 
     @Deprecated
