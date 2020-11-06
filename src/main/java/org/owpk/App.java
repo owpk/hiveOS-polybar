@@ -1,8 +1,10 @@
 package org.owpk;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.owpk.entities.Component;
 import org.owpk.entities.api.auth.User;
 import org.owpk.module.CurrentModule;
+import org.owpk.resolver.Resolver;
 import org.owpk.resolver.WalletSpecResolver;
 
 import java.io.IOException;

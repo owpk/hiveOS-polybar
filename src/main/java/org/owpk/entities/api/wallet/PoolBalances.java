@@ -4,14 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.owpk.entities.AbsComponent;
 import org.owpk.entities.Component;
+import org.owpk.utils.JsonMapper;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class PoolBalances implements Component {
+public class PoolBalances extends AbsComponent {
 
     private String pool;
     @JsonProperty
@@ -36,10 +40,5 @@ public class PoolBalances implements Component {
                 "Value: " + value + "\n" +
                 "Value USD: " + valueUsd + "\n" +
                 "Value fiat: " + valueFiat;
-    }
-
-    @Override
-    public void execute(List<String> options) {
-
     }
 }

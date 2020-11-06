@@ -6,20 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.owpk.entities.Component;
-import org.owpk.utils.JsonMapper;
+import org.owpk.entities.AbsComponent;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Consumer;
 
 @JsonAutoDetect
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Wallet implements Component {
+public class Wallet extends AbsComponent {
 
     private Long id;
     @JsonProperty(value = "user_id") private Long userId;
@@ -40,13 +37,4 @@ public class Wallet implements Component {
         return  name;
     }
 
-    @Override
-    public void execute(List<String> options) {
-        Map<String, Object> objGraph = JsonMapper.convert(this, LinkedHashMap.class);
-        objGraph.forEach((k, v) -> {
-            if (options.contains(k)) {
-                System.out.println(k + " : " + v);
-            }
-        });
-    }
 }

@@ -45,11 +45,11 @@ public class CurrentModule implements Module {
     }
 
     @Override
-    public void walletsRequest(Resolver<Component> resolver) throws UnirestException {
+    public void walletsRequest(Resolver resolver) throws UnirestException {
         if (tokenManager.checkIfExpired()) {
             HttpResponse<JsonNode> response = wallet.getRequest(
-                   "/farms/" + properties.getProperty("farmId") + "/wallets",
-                   tokenManager.getToken());
+                    "/farms/" + properties.getProperty("farmId") + "/wallets",
+                    tokenManager.getToken());
 
             if (response.getStatus() == 200) {
                 List<Component> wallets = new ArrayList<>();
@@ -63,5 +63,4 @@ public class CurrentModule implements Module {
             }
         }
     }
-
 }
