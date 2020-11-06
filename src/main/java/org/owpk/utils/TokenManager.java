@@ -30,7 +30,7 @@ public class TokenManager {
 
     public String getToken() {
         String token = "default";
-        List<String> lines = getData();
+        List<String> lines = getTempData();
         if (lines.size() > 0)
             token = lines.get(0);
         return token;
@@ -38,7 +38,7 @@ public class TokenManager {
 
     public boolean checkIfExpired() {
         double currentTime = new Date().getTime() * 0.001;
-        List<String> lines = getData();
+        List<String> lines = getTempData();
         if (lines.size() != 3) return false;
         Long tokenExpirationTime = Long.parseLong(lines.get(1));
         Double dayX = Long.parseLong(lines.get(2)) * 0.001;
@@ -49,7 +49,7 @@ public class TokenManager {
         return false;
     }
 
-    private List<String> getData() {
+    private List<String> getTempData() {
         List<String> lines = new ArrayList<>();
         try {
             lines = Files.readAllLines(Paths.get(TEMP_FILE));

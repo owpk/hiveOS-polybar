@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PoolBalances implements Entity {
+public class PoolBalances {
     private String pool;
     @JsonProperty
     private Double value;

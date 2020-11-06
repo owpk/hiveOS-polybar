@@ -6,12 +6,17 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import org.json.JSONArray;
 import org.owpk.entities.api.wallet.PoolBalances;
+import org.owpk.entities.api.wallet.Wallet;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+* Fully replaced by {@link org.owpk.resolver.Resolver}
+*/
 public class Filter {
 
     @Deprecated
@@ -30,4 +35,11 @@ public class Filter {
                     return new PoolBalances();
                 }).collect(Collectors.toList());
     }
+
+   @Deprecated
+   public static final Consumer<Wallet> pullUsdMinimalInfo = x -> System.out.println(
+             (x.getPoolBalances() != null ?
+                    (x.getPoolBalances().stream()
+                           .map(i -> String.format("%s : %s$", i.getPool(), i.getValueUsd()))
+                           .collect(Collectors.joining())) : "N/A"));
 }

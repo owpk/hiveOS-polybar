@@ -2,14 +2,11 @@ package org.owpk;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.owpk.entities.User;
-import org.owpk.entities.UserDetails;
 import org.owpk.entities.api.wallet.Wallet;
 import org.owpk.module.CurrentModule;
-import org.owpk.utils.Resources;
+import org.owpk.resolver.WalletResolver;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -18,31 +15,24 @@ public class App {
 
     private static org.owpk.module.Module polybar;
 
-    private static final Consumer<Wallet> pullUsdMinimalInfo;
-    static {
-        pullUsdMinimalInfo = x -> System.out.println(
-            (x.getPoolBalances() != null ?
-                    (x.getPoolBalances().stream()
-                            .map(i -> String.format("%s : %s$", i.getPool(), i.getValueUsd()))
-                            .collect(Collectors.joining())) : "N/A"));
-    }
+
 
     public static void main(String[] args) throws IOException, UnirestException {
         polybar = new CurrentModule();
-
         switch (args[0]) {
             case "-a":
-                UserDetails userDetails = interactiveAuth();
-                Resources.write(userDetails, Resources.USER_DETAILS_CONFIG);
-                polybar.authRequest(userDetails);
+                User user = interactiveAuth();
+                polybar.authRequest(user);
                 break;
             case "-w":
-                polybar.walletRequest();
+                String[] _args = new String[args.length - 1];
+                System.arraycopy(args, 1, _args, 0, args.length);
+                polybar.walletsRequest(new WalletResolver(_args));
                 break;
         }
     }
 
-    public static UserDetails interactiveAuth() {
+    public static User interactiveAuth() {
         User user = new User();
         Scanner sc = new Scanner(System.in);
 
@@ -58,11 +48,7 @@ public class App {
         user.setLogin(login);
         user.setPassword(password);
         user.setTwofa_code(twoAuth);
-
-        UserDetails userDetails = new UserDetails();
-        userDetails.setUser(user);
-
-        return userDetails;
+        return user;
     }
 
 }
