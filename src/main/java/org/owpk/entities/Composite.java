@@ -14,6 +14,9 @@ public class Composite <T extends Component> implements Component {
 
    @Override
    public void execute(List<String> options) {
-      list.forEach(x -> x.execute(options));
+      list.forEach(x -> {
+         x.execute(options);
+         System.out.println("------------");
+      });
    }
 }

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import org.json.JSONArray;
-import org.owpk.entities.api.wallet.PoolBalances;
-import org.owpk.entities.api.wallet.Wallet;
+import org.owpk.entities.apiJson.wallet.PoolBalances;
+import org.owpk.entities.apiJson.wallet.Wallet;
 
 import java.util.Arrays;
 import java.util.List;

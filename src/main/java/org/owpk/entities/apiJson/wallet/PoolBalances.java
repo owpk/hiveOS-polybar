@@ -1,16 +1,10 @@
-package org.owpk.entities.api.wallet;
+package org.owpk.entities.apiJson.wallet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.owpk.entities.AbsComponent;
-import org.owpk.entities.Component;
-import org.owpk.utils.JsonMapper;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -41,4 +35,5 @@ public class PoolBalances extends AbsComponent {
                 "Value USD: " + valueUsd + "\n" +
                 "Value fiat: " + valueFiat;
     }
+
 }

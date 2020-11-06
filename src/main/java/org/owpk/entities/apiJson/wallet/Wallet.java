@@ -1,4 +1,4 @@
-package org.owpk.entities.api.wallet;
+package org.owpk.entities.apiJson.wallet;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.owpk.entities.AbsComponent;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @JsonAutoDetect
 @AllArgsConstructor
@@ -37,4 +39,21 @@ public class Wallet extends AbsComponent {
         return  name;
     }
 
+    @Override
+    protected Predicate<String> standardPredicate() {
+        return x -> x.startsWith("pool_balances");
+    }
+
+    @Override
+    protected void standardOutput(List<String> options, String key, Object value) {
+        List<String> opt = Arrays.stream(
+            options.stream()
+                    .filter(standardPredicate())
+                    .findAny()
+                    .get()
+                    .split(":"))
+                .skip(1)
+                .collect(Collectors.toList());
+        poolBalances.forEach(x -> x.execute(opt));
+    }
 }

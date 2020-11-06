@@ -1,4 +1,4 @@
-package org.owpk.entities.api.auth;
+package org.owpk.entities.apiJson.auth;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.*;

@@ -9,8 +9,8 @@ import org.owpk.controllers.AuthController;
 import org.owpk.controllers.Controller;
 import org.owpk.controllers.WalletController;
 import org.owpk.entities.Component;
-import org.owpk.entities.api.auth.User;
-import org.owpk.entities.api.wallet.Wallet;
+import org.owpk.entities.apiJson.auth.User;
+import org.owpk.entities.apiJson.wallet.Wallet;
 import org.owpk.resolver.Resolver;
 import org.owpk.utils.JsonMapper;
 import org.owpk.utils.Resources;
@@ -42,6 +42,7 @@ public class CurrentModule implements Module {
             tokenManager.writeToken((String) response.getBody().getObject().get("access_token"),
                     (Integer) response.getBody().getObject().get("expires_in"));
         }
+        System.out.printf("Auth: %s, %d",response.getStatusText(),response.getStatus());
     }
 
     @Override
