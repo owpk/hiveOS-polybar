@@ -4,6 +4,7 @@ package org.owpk.resolver;
 import com.mashape.unirest.http.JsonNode;
 import org.owpk.entities.Component;
 import org.owpk.entities.Composite;
+import org.owpk.entities.apiJson.wallet.Wallet;
 import picocli.CommandLine;
 
 import java.util.List;
@@ -20,11 +21,11 @@ public class WalletSpecResolver extends AbsResolver {
     }
 
     @Override
-    public void resolve(List<Component> list) {
+    public void resolve(List<? extends Component> list) {
         try {
             CommandLine.ParseResult parseResult = new CommandLine(this).parseArgs(args);
             List<String> options = parseOptions(coinNames, ",");
-            Composite<Component> composite = new Composite<>(list);
+            Composite composite = new Composite(list);
             composite.execute(options);
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());

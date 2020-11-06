@@ -2,11 +2,13 @@ package org.owpk.entities;
 
 import org.owpk.utils.JsonMapper;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public abstract class AbsComponent implements Component {
 
@@ -23,22 +25,38 @@ public abstract class AbsComponent implements Component {
                 System.out.println(k + " : " + v);
             } else if (options.contains(k)) {
                 System.out.println(k + " : " + v);
-            } else if (subClassPredicate(standardPredicate(), k)) {
-                standardOutput(options, k, v);
+            } else if (subClassPredicate(defaultPredicate(), k)) {
+                defaultOutput(options, k, v);
             }
+            maybeOtherConditions(options, k, v);
         };
     }
 
-    protected void standardOutput(List<String> options,
-                                  String key, Object value) {
+    protected void maybeOtherConditions(List<String> options, String key, Object value) {
+
+    };
+
+    protected void defaultOutput(List<String> options,
+                                 String key, Object value) {
         System.out.println(key + " : " + value);
     }
 
-    protected Predicate<String> standardPredicate() {
+    protected Predicate<String> defaultPredicate() {
         return x -> false;
     }
 
     protected boolean subClassPredicate(Predicate<String> predicate, Object o) {
         return predicate.test(o.toString());
+    }
+
+    protected List<String> parseInheritedOptions(List<String> options) {
+        return  Arrays.stream(
+                options.stream()
+                        .filter(defaultPredicate())
+                        .findAny()
+                        .get()
+                        .split(":"))
+                .skip(1)
+                .collect(Collectors.toList());
     }
 }

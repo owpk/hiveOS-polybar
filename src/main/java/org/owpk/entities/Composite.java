@@ -5,10 +5,10 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class Composite <T extends Component> implements Component {
-   protected List<T> list;
+public class Composite implements Component {
+   protected List<? extends Component> list;
 
-   public Composite(List<T> list) {
+   public Composite(List<? extends Component> list) {
       this.list = list;
    }
 

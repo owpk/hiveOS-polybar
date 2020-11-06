@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.owpk.entities.AbsComponent;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @JsonAutoDetect
 @AllArgsConstructor
@@ -40,20 +38,12 @@ public class Wallet extends AbsComponent {
     }
 
     @Override
-    protected Predicate<String> standardPredicate() {
+    protected Predicate<String> defaultPredicate() {
         return x -> x.startsWith("pool_balances");
     }
 
     @Override
-    protected void standardOutput(List<String> options, String key, Object value) {
-        List<String> opt = Arrays.stream(
-            options.stream()
-                    .filter(standardPredicate())
-                    .findAny()
-                    .get()
-                    .split(":"))
-                .skip(1)
-                .collect(Collectors.toList());
-        poolBalances.forEach(x -> x.execute(opt));
+    protected void defaultOutput(List<String> options, String key, Object value) {
+        poolBalances.forEach(x -> x.execute(parseInheritedOptions(options)));
     }
 }

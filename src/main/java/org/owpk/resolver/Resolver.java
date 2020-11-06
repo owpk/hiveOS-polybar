@@ -6,6 +6,6 @@ import org.owpk.entities.Component;
 import java.util.List;
 
 public interface Resolver {
-   void resolve(List<Component> list);
+   void resolve(List<? extends Component> list);
    void printError(JsonNode body, int status);
 }

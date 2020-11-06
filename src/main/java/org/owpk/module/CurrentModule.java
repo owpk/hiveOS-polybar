@@ -53,7 +53,7 @@ public class CurrentModule implements Module {
                     tokenManager.getToken());
 
             if (response.getStatus() == 200) {
-                List<Component> wallets = new ArrayList<>();
+                List<Wallet> wallets = new ArrayList<>();
                 for (Object o : (JSONArray) response.getBody().getObject().get("data")) {
                     Wallet w = JsonMapper.readFromJson(((JSONObject) o).toString(), Wallet.class);
                     wallets.add(w);

@@ -12,6 +12,8 @@ public class App {
 
    public static void main(String[] args) throws IOException, UnirestException {
       org.owpk.module.Module module = new CurrentModule();
+
+      //TODO Вынести в отедльный класс под управлением picocli
       switch (args[0]) {
          case "-a":
             User user = interactiveAuth();
