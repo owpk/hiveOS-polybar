@@ -8,29 +8,26 @@ import org.json.JSONObject;
 import org.owpk.controllers.AuthController;
 import org.owpk.controllers.Controller;
 import org.owpk.controllers.WalletController;
-import org.owpk.entities.User;
-import org.owpk.entities.UserDetails;
+import org.owpk.entities.api.auth.User;
 import org.owpk.entities.api.wallet.Wallet;
 import org.owpk.resolver.Resolver;
 import org.owpk.utils.JsonMapper;
+import org.owpk.utils.Resources;
 import org.owpk.utils.TokenManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class CurrentModule implements Module {
     private final Controller auth;
     private final Controller wallet;
     private final TokenManager tokenManager;
-    private final UserDetails userDetails;
+    private final Properties properties;
 
     public CurrentModule() {
-
-        //TODO
-        userDetails = new UserDetails();
-        // STAB !!!
-
+        properties = new Resources.ConfigReader("hiveclient.conf").getProps();
         auth = new AuthController();
         wallet = new WalletController();
         tokenManager = new TokenManager();
@@ -49,7 +46,9 @@ public class CurrentModule implements Module {
     @Override
     public void walletsRequest(Resolver<Wallet> resolver) throws UnirestException {
         if (tokenManager.checkIfExpired()) {
-            HttpResponse<JsonNode> response = wallet.getRequest("/farms/" + userDetails.getFarm_id() + "/wallets", tokenManager.getToken());
+            HttpResponse<JsonNode> response = wallet.getRequest(
+                   "/farms/" + properties.getProperty("farmId") + "/wallets",
+                   tokenManager.getToken());
 
             if (response.getStatus() == 200) {
                 List<Wallet> wallets = new ArrayList<>();
@@ -59,7 +58,7 @@ public class CurrentModule implements Module {
                 }
                 resolver.resolve(wallets);
             } else {
-                System.out.printf("Err: %s, %d", response.getBody(), response.getStatus());
+                resolver.printError(response.getBody(), response.getStatus());
             }
         }
     }

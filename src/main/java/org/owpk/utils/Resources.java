@@ -1,10 +1,7 @@
 package org.owpk.utils;
 
-import org.yaml.snakeyaml.Yaml;
-
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Properties;
 
 public class Resources {
     private static final String PROTOCOL = "https://";
@@ -14,5 +11,23 @@ public class Resources {
 
     public static String getTARGET() {
         return TARGET;
+    }
+
+    public static class ConfigReader {
+        private static final String path = "/home/owpk/hiveclient/";
+        private Properties properties;
+
+        public ConfigReader(String confName) {
+            try {
+                properties = new Properties();
+                properties.load(Resources.class.getClassLoader().getResourceAsStream(confName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public Properties getProps(){
+            return properties;
+        }
     }
 }

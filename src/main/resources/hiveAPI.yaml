@@ -1500,7 +1500,7 @@ paths:
         type: string
       - name: config_type
         in: query
-        description: Comma-separated list of config types
+        description: Comma-separated list of hiveclient.conf types
         required: false
         type: string
         enum:
@@ -6838,7 +6838,7 @@ paths:
                             example: Avermore
                     default_fork:
                       type: string
-                      description: This fork is used on worker if no fork is provided in config
+                      description: This fork is used on worker if no fork is provided in hiveclient.conf
       security: []
   /hive/coins:
     get:
@@ -9855,7 +9855,7 @@ definitions:
             description: Miner Algo
           user_config:
             type: string
-            description: Extra config arguments
+            description: Extra hiveclient.conf arguments
           ver:
             type: string
             description: Version
@@ -9943,7 +9943,7 @@ definitions:
             description: Pool pass
           user_config:
             type: string
-            description: Extra config arguments
+            description: Extra hiveclient.conf arguments
           ver:
             type: string
             description: Version
@@ -9968,7 +9968,7 @@ definitions:
             description: Pool pass
           user_config:
             type: string
-            description: Extra config arguments
+            description: Extra hiveclient.conf arguments
           ver:
             type: string
             description: Version
@@ -10015,7 +10015,7 @@ definitions:
             maximum: 300
           user_config:
             type: string
-            description: Extra config arguments
+            description: Extra hiveclient.conf arguments
           ver:
             type: string
             description: Version
@@ -10043,7 +10043,7 @@ definitions:
             description: Pool pass
           user_config:
             type: string
-            description: Extra config arguments
+            description: Extra hiveclient.conf arguments
           ver:
             type: string
             description: Version
@@ -10071,7 +10071,7 @@ definitions:
             description: Pool pass
           user_config:
             type: string
-            description: Extra config arguments
+            description: Extra hiveclient.conf arguments
           ver:
             type: string
             description: Version
@@ -10099,13 +10099,13 @@ definitions:
             description: Config override
           amd:
             type: string
-            description: AMD config override
+            description: AMD hiveclient.conf override
           nvidia:
             type: string
-            description: Nvidia config override
+            description: Nvidia hiveclient.conf override
           cpu:
             type: string
-            description: CPU config override
+            description: CPU hiveclient.conf override
           hugepages:
             type: integer
             description: Amount of hugepages
@@ -10276,7 +10276,7 @@ definitions:
             description: Pool pass (fallback)
           user_config:
             type: string
-            description: Extra config arguments
+            description: Extra hiveclient.conf arguments
           ver:
             type: string
             description: Version
@@ -10765,7 +10765,7 @@ definitions:
             description: Config override for second algo
           common_config:
             type: string
-            description: Common config override
+            description: Common hiveclient.conf override
           ver:
             type: string
             description: Version
@@ -11986,7 +11986,7 @@ definitions:
                 port: '%URL_PORT%'
                 server: '%URL_PROTO%1://%URL_HOST%'
                 template: '%WAL%.%WORKER_NAME%/%EMAIL%'
-            description: Miner config templates keyed by miner name
+            description: Miner hiveclient.conf templates keyed by miner name
             additionalProperties:
               type: object
               properties: {}
@@ -12814,7 +12814,7 @@ definitions:
             model_code:
               type: string
               example: s9.100
-              description: Hiveon ASIC's model code for which the config will be applied
+              description: Hiveon ASIC's model code for which the hiveclient.conf will be applied
             config:
               $ref: '#/definitions/OCConfigAsic'
   ScheduleActionF:
@@ -13470,7 +13470,7 @@ parameters:
   configType:
     name: config_type
     in: query
-    description: Comma-separated list of config types
+    description: Comma-separated list of hiveclient.conf types
     required: false
     type: string
     enum:

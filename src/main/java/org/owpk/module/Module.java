@@ -1,7 +1,7 @@
 package org.owpk.module;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.owpk.entities.User;
+import org.owpk.entities.api.auth.User;
 import org.owpk.entities.api.wallet.Wallet;
 import org.owpk.resolver.Resolver;
 
