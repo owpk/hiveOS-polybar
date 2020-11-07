@@ -1,9 +1,11 @@
 package org.owpk.resolver;
 
+import org.owpk.entities.Component;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class AbsResolver implements Resolver {
+public abstract class AbsResolver<E extends Component> implements Resolver<E> {
 
    protected String[] args;
 

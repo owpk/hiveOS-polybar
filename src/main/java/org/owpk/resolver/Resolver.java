@@ -5,7 +5,7 @@ import org.owpk.entities.Component;
 
 import java.util.List;
 
-public interface Resolver {
-   void resolve(List<? extends Component> list);
+public interface Resolver<T extends Component> {
+   void resolve(List<T> list);
    void printError(JsonNode body, int status);
 }

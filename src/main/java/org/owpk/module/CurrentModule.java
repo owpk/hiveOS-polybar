@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class CurrentModule implements Module {
+
     private final Controller auth;
     private final Controller wallet;
     private final TokenManager tokenManager;
@@ -46,14 +47,14 @@ public class CurrentModule implements Module {
     }
 
     @Override
-    public void walletsRequest(Resolver resolver) throws UnirestException {
+    public void walletsRequest(Resolver<Component> resolver) throws UnirestException {
         if (tokenManager.checkIfExpired()) {
             HttpResponse<JsonNode> response = wallet.getRequest(
                     "/farms/" + properties.getProperty("farmId") + "/wallets",
                     tokenManager.getToken());
 
             if (response.getStatus() == 200) {
-                List<Wallet> wallets = new ArrayList<>();
+                List<Component> wallets = new ArrayList<>();
                 for (Object o : (JSONArray) response.getBody().getObject().get("data")) {
                     Wallet w = JsonMapper.readFromJson(((JSONObject) o).toString(), Wallet.class);
                     wallets.add(w);

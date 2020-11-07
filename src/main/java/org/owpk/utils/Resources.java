@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Resources {
-    private static final String PROTOCOL = "https://";
-    private static final String HOST = "api2.hiveos.farm";
+    private static final String PROTOCOL =  "https://";
+    private static final String HOST =      "api2.hiveos.farm";
     private static final String BASE_PATH = "/api/v2";
     private static final String TARGET = PROTOCOL + HOST + BASE_PATH;
 
