@@ -37,10 +37,10 @@ public class Filter {
                 }).collect(Collectors.toList());
     }
 
-   @Deprecated
-   public static final Consumer<Wallet> pullUsdMinimalInfo = x -> System.out.println(
-             (x.getPoolBalances() != null ?
+    @Deprecated
+    public static final Consumer<Wallet> pullUsdMinimalInfo = x -> System.out.println(
+            (x.getPoolBalances() != null ?
                     (x.getPoolBalances().stream()
-                           .map(i -> String.format("%s : %s$", i.getPool(), i.getValueUsd()))
-                           .collect(Collectors.joining())) : "N/A"));
+                            .map(i -> String.format("%s : %s$", i.getPool(), i.getValueUsd()))
+                            .collect(Collectors.joining())) : "N/A"));
 }

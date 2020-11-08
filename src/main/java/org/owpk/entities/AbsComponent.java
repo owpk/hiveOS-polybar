@@ -22,13 +22,11 @@ public abstract class AbsComponent implements Component {
     protected BiConsumer<String, Object> defaultBiConsumer(List<String> options) {
         return (k,v) -> {
             if (options.size() == 0) {
-                System.out.println(k + " : " + v);
+                defaultOutput(k, v);
             } else if (options.contains(k)) {
-                System.out.println(k + " : " + v);
-            } else if (subClassPredicate(defaultPredicate(), k)) {
-                defaultOutput(options, k, v);
-            }
-            maybeOtherConditions(options, k, v);
+                defaultOutput(k, v);
+            } else
+                maybeOtherConditions(options, k, v);
         };
     }
 
@@ -36,19 +34,36 @@ public abstract class AbsComponent implements Component {
 
     };
 
-    protected void defaultOutput(List<String> options,
-                                 String key, Object value) {
+    protected void defaultOutput(String key, Object value) {
         System.out.println(key + " : " + value);
     }
 
+    protected List<String> parseInheritedOptions(List<String> options, Predicate<String> predicate) {
+        return  Arrays.stream(
+                options.stream()
+                        .filter(predicate)
+                        .findAny()
+                        .get()
+                        .split(":"))
+                .skip(1)
+                .collect(Collectors.toList());
+    }
+
+    protected boolean checkIfValuePresent(List<String> options, String value) {
+        return options.stream().anyMatch(x -> x.startsWith(value));
+    }
+
+    @Deprecated
     protected Predicate<String> defaultPredicate() {
         return x -> false;
     }
 
+    @Deprecated
     protected boolean subClassPredicate(Predicate<String> predicate, Object o) {
         return predicate.test(o.toString());
     }
 
+    @Deprecated
     protected List<String> parseInheritedOptions(List<String> options) {
         return  Arrays.stream(
                 options.stream()

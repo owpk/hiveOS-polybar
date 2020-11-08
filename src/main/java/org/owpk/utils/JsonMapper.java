@@ -9,6 +9,7 @@ import java.io.Writer;
 
 public class JsonMapper {
     private static final ObjectMapper mapper;
+
     static {
         mapper = new ObjectMapper();
     }

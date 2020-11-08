@@ -31,12 +31,11 @@ public class Wallet extends AbsComponent {
     @JsonProperty(value = "workers_count") private Integer workersCount;
 
     @Override
-    protected Predicate<String> defaultPredicate() {
-        return x -> x.startsWith("pool_balances");
-    }
-
-    @Override
-    protected void defaultOutput(List<String> options, String key, Object value) {
-        poolBalances.forEach(x -> x.execute(parseInheritedOptions(options)));
+    protected void maybeOtherConditions(List<String> options, String key, Object value) {
+        if (checkIfValuePresent(options, "pool_balances")) {
+            poolBalances.forEach(x -> x.execute(parseInheritedOptions(options, i -> i.startsWith("pool_balances"))));
+        } else if (checkIfValuePresent(options, "balance")) {
+            balance.execute(parseInheritedOptions(options, i -> i.startsWith("balance")));
+        }
     }
 }

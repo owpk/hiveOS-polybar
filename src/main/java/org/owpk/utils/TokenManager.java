@@ -20,9 +20,9 @@ public class TokenManager {
     public void writeToken(String token, Integer tokenExpiration) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE))) {
             String dayX = String.valueOf(new Date().getTime());
-            writer.write(token+"\n");
-            writer.write(tokenExpiration+"\n");
-            writer.write(dayX+"\n");
+            writer.write(token + "\n");
+            writer.write(tokenExpiration + "\n");
+            writer.write(dayX + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }

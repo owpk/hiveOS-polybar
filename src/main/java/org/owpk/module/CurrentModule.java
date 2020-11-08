@@ -29,7 +29,7 @@ public class CurrentModule implements Module {
     private final Properties properties;
 
     public CurrentModule() {
-        properties = new Resources.ConfigReader("hiveclient.conf").getProps();
+        properties = Resources.ConfigReader.getProps();
         auth = new AuthController();
         wallet = new WalletController();
         tokenManager = new TokenManager();
@@ -56,8 +56,7 @@ public class CurrentModule implements Module {
             if (response.getStatus() == 200) {
                 List<Wallet> wallets = new ArrayList<>();
                 for (Object o : (JSONArray) response.getBody().getObject().get("data")) {
-                    Wallet w = JsonMapper.readFromJson(((JSONObject) o).toString(), Wallet.class);
-                    wallets.add(w);
+                    wallets.add(JsonMapper.readFromJson(((JSONObject) o).toString(), Wallet.class));
                 }
                 resolver.resolve(wallets);
             } else {
