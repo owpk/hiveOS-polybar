@@ -1,5 +1,6 @@
 package org.owpk.utils;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -13,14 +14,16 @@ public class Resources {
         return TARGET;
     }
 
+    //TODO config validator
+    //TODO autogenerate config
     public static class ConfigReader {
         private static final String path = "/home/owpk/hiveclient/";
         private static final String CONFIG_NAME = "hiveclient.conf";
         private static Properties properties;
         static {
-            try {
+            try(FileInputStream inputStream = new FileInputStream(CONFIG_NAME)) {
                 properties = new Properties();
-                properties.load(Resources.class.getClassLoader().getResourceAsStream(CONFIG_NAME));
+                properties.load(inputStream);
             } catch (IOException e) {
                 e.printStackTrace();
             }

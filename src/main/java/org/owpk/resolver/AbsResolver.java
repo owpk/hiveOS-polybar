@@ -6,6 +6,7 @@ import org.owpk.entities.Component;
 import org.owpk.entities.Composite;
 import org.owpk.entities.apiJson.wallet.Wallet;
 import org.owpk.utils.JsonMapper;
+import org.owpk.utils.Resources;
 import picocli.CommandLine;
 
 import java.util.*;
@@ -24,6 +25,12 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
             description = "filter by json field [-v field1,field2,field3:filed1:field2,field3...] ")
     protected String arguments;
 
+    @CommandLine.Option(names = {"-d","--delimiter"})
+    protected boolean delimiter;
+
+    @CommandLine.Option(names = {"-D","--default"})
+    protected boolean defaultPrintPattern;
+
     protected String[] args;
 
     public AbsResolver(String[] args) {
@@ -39,6 +46,8 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
         try {
             CommandLine.ParseResult parseResult = new CommandLine(this).parseArgs(args);
             Composite composite = new Composite(doFilter(list));
+            if (defaultPrintPattern) Resources.ConfigReader.getProps().setProperty("format", "%s : %s\n");
+            composite.useDelimiter(delimiter);
             composite.execute(getOptionList());
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());

@@ -32,8 +32,8 @@ public abstract class AbsComponent implements Component {
     }
 
     /**
-     * if an entity contains other entities or a list of other entities, you need to override
-     * this method in the inherited class (which should be a component) and specify that fields.
+     * if an entity contains other entities or a list of other entities as field, you need to override
+     * this method in the inherited class (which should be a component) and specify that field names.
      * For example:
      * @see org.owpk.entities.apiJson.wallet.Wallet
      */

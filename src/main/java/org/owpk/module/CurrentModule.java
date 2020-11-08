@@ -43,7 +43,7 @@ public class CurrentModule implements Module {
             tokenManager.writeToken((String) response.getBody().getObject().get("access_token"),
                     (Integer) response.getBody().getObject().get("expires_in"));
         }
-        System.out.printf("Auth: %s, %d\n",response.getStatusText(),response.getStatus());
+        System.out.printf("Auth: %s, Status code: %d\n", response.getStatusText(),response.getStatus());
     }
 
     @Override
