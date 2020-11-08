@@ -32,9 +32,9 @@ public class Wallet extends AbsComponent {
 
     @Override
     protected void maybeOtherConditions(List<String> options, String key, Object value) {
-        if (checkIfValuePresent(options, "pool_balances")) {
+        if (checkIfValuePresent(options, "pool_balances") && key.startsWith("pool_balances")) {
             poolBalances.forEach(x -> x.execute(parseInheritedOptions(options, i -> i.startsWith("pool_balances"))));
-        } else if (checkIfValuePresent(options, "balance")) {
+        } else if (checkIfValuePresent(options, "balance") && key.startsWith("balance")) {
             balance.execute(parseInheritedOptions(options, i -> i.startsWith("balance")));
         }
     }

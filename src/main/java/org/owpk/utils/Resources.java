@@ -15,7 +15,7 @@ public class Resources {
 
     public static class ConfigReader {
         private static final String path = "/home/owpk/hiveclient/";
-        private static final String CONFIG_NAME = "hiveclient.config";
+        private static final String CONFIG_NAME = "hiveclient.conf";
         private static Properties properties;
         static {
             try {

@@ -1,6 +1,7 @@
 package org.owpk.entities;
 
 import lombok.Getter;
+import org.owpk.utils.Resources;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Composite implements Component {
     public void execute(List<String> options) {
         list.forEach(x -> {
             x.execute(options);
-            System.out.println("------------");
+            System.out.println(Resources.ConfigReader.getProps().get("delimiter"));
         });
     }
 }

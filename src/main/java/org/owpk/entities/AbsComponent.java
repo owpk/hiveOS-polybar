@@ -1,6 +1,7 @@
 package org.owpk.entities;
 
 import org.owpk.utils.JsonMapper;
+import org.owpk.utils.Resources;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -35,7 +36,7 @@ public abstract class AbsComponent implements Component {
     };
 
     protected void defaultOutput(String key, Object value) {
-        System.out.println(key + " : " + value);
+        System.out.printf(Resources.ConfigReader.getProps().getProperty("format") + "\n", key, value);
     }
 
     protected List<String> parseInheritedOptions(List<String> options, Predicate<String> predicate) {
