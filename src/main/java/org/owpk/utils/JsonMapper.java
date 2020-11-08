@@ -2,10 +2,15 @@ package org.owpk.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.owpk.entities.Component;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class JsonMapper {
     private static final ObjectMapper mapper;
@@ -24,6 +29,15 @@ public class JsonMapper {
         return mapper.convertValue(obj, clazz);
     }
 
+    @SuppressWarnings("unchecked")
+    public  static <E extends Component> List<Map<String, Object>> convert(List<E> entities) {
+        List<Map<String, Object>> maps = new ArrayList<>();
+        for (E e : entities) {
+            maps.add(convert(e, HashMap.class));
+        }
+        return maps;
+    }
+
     public static <T> T readFromJson(String json, Class<T> clazz) {
         T obj = null;
         try {
@@ -33,4 +47,6 @@ public class JsonMapper {
         }
         return obj;
     }
+
+
 }

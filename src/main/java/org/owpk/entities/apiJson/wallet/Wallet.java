@@ -6,7 +6,6 @@ import lombok.*;
 import org.owpk.entities.AbsComponent;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 @JsonAutoDetect
 @AllArgsConstructor

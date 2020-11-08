@@ -17,7 +17,7 @@ public class Composite implements Component {
     public void execute(List<String> options) {
         list.forEach(x -> {
             x.execute(options);
-            System.out.println(Resources.ConfigReader.getProps().get("delimiter"));
+            System.out.printf((String) Resources.ConfigReader.getProps().get("delimiter"));
         });
     }
 }

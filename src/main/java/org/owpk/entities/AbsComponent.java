@@ -31,14 +31,23 @@ public abstract class AbsComponent implements Component {
         };
     }
 
+    /**
+     * if an entity contains other entities or a list of other entities, you need to override
+     * this method in the inherited class (which should be a component) and specify that fields.
+     * For example:
+     * @see org.owpk.entities.apiJson.wallet.Wallet
+     */
     protected void maybeOtherConditions(List<String> options, String key, Object value) {
 
     };
 
     protected void defaultOutput(String key, Object value) {
-        System.out.printf(Resources.ConfigReader.getProps().getProperty("format") + "\n", key, value);
+        System.out.printf(Resources.ConfigReader.getProps().getProperty("format"), key, value);
     }
 
+    /**
+     * divides the statement "object1:obj1_field1:obj1_field2,..."
+     */
     protected List<String> parseInheritedOptions(List<String> options, Predicate<String> predicate) {
         return  Arrays.stream(
                 options.stream()
@@ -52,27 +61,5 @@ public abstract class AbsComponent implements Component {
 
     protected boolean checkIfValuePresent(List<String> options, String value) {
         return options.stream().anyMatch(x -> x.startsWith(value));
-    }
-
-    @Deprecated
-    protected Predicate<String> defaultPredicate() {
-        return x -> false;
-    }
-
-    @Deprecated
-    protected boolean subClassPredicate(Predicate<String> predicate, Object o) {
-        return predicate.test(o.toString());
-    }
-
-    @Deprecated
-    protected List<String> parseInheritedOptions(List<String> options) {
-        return  Arrays.stream(
-                options.stream()
-                        .filter(defaultPredicate())
-                        .findAny()
-                        .get()
-                        .split(":"))
-                .skip(1)
-                .collect(Collectors.toList());
     }
 }

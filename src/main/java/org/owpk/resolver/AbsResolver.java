@@ -4,6 +4,7 @@ import com.mashape.unirest.http.JsonNode;
 import org.owpk.FilterInt;
 import org.owpk.entities.Component;
 import org.owpk.entities.Composite;
+import org.owpk.entities.apiJson.wallet.Wallet;
 import org.owpk.utils.JsonMapper;
 import picocli.CommandLine;
 
@@ -52,7 +53,7 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
         if (entities.size() == 0) return entities;
 
         Map<String, List<String>> map = parseFilterOptions();
-        List<Map<String, Object>> lst = getObjList(entities);
+        List<Map<String, Object>> lst = JsonMapper.convert(entities);
 
         lst.forEach(x -> map.forEach((k, v) -> {
             if (!v.contains((String) x.get(k))) {
@@ -60,15 +61,6 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
             }
         }));
         return entities;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected List<Map<String, Object>> getObjList(List<E> entities) {
-        List<Map<String, Object>> maps = new ArrayList<>();
-        for (E e : entities) {
-            maps.add(JsonMapper.convert(e, HashMap.class));
-        }
-        return maps;
     }
 
     protected Map<String, List<String>> parseFilterOptions() {
@@ -82,6 +74,13 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
         return Arrays.stream(opt.split(regex)).map(String::trim).collect(Collectors.toList());
     }
 
+    /**
+     * In general, if you need to filter your list of entities, you need to override this method in the inherited
+     * class and specify the class field name, according to this field
+     * the object will be removed from list you need to filter.
+     * For example:
+     * @see org.owpk.resolver.WalletSpecResolver#getPredicate(Map, Wallet)
+     */
     protected abstract Predicate<E> getPredicate(Map<String, Object> objList, E entityList);
 
 }
