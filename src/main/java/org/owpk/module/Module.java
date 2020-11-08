@@ -10,5 +10,5 @@ import java.io.IOException;
 
 public interface Module {
     void authRequest(User user) throws IOException, UnirestException;
-    <E extends Component> void walletsRequest(Resolver<E> resolver) throws UnirestException;
+    void walletsRequest(Resolver<Wallet> resolver) throws UnirestException;
 }

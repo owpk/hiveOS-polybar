@@ -47,16 +47,16 @@ public class CurrentModule implements Module {
     }
 
     @Override
-    public <E extends Component> void walletsRequest(Resolver<E> resolver) throws UnirestException {
+    public void walletsRequest(Resolver<org.owpk.entities.apiJson.wallet.Wallet> resolver) throws UnirestException {
         if (tokenManager.checkIfExpired()) {
             HttpResponse<JsonNode> response = wallet.getRequest(
                     "/farms/" + properties.getProperty("farmId") + "/wallets",
                     tokenManager.getToken());
 
             if (response.getStatus() == 200) {
-                List<E> wallets = new ArrayList<>();
+                List<Wallet> wallets = new ArrayList<>();
                 for (Object o : (JSONArray) response.getBody().getObject().get("data")) {
-                    E w = (E) JsonMapper.readFromJson(((JSONObject) o).toString(), Wallet.class);
+                    Wallet w = JsonMapper.readFromJson(((JSONObject) o).toString(), Wallet.class);
                     wallets.add(w);
                 }
                 resolver.resolve(wallets);
