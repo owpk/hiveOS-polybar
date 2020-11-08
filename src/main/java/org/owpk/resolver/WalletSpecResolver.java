@@ -1,33 +1,25 @@
 package org.owpk.resolver;
 
 
-import com.mashape.unirest.http.JsonNode;
-import org.owpk.FilterInt;
-import org.owpk.entities.Component;
-import org.owpk.entities.Composite;
 import org.owpk.entities.apiJson.wallet.Wallet;
+import org.owpk.utils.JsonMapper;
 import picocli.CommandLine;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class WalletSpecResolver extends AbsResolver<Wallet> {
-
-    @CommandLine.Option(names = {"-v", "--verbose"},
-            paramLabel = "FILTER",
-            description = "wallet specification")
-    private String arguments;
 
     public WalletSpecResolver(String[] args) {
         super(args);
     }
 
     @Override
-    protected List<String> getOptionList() {
-        return parseOptions(arguments, ",");
+    protected Predicate<Wallet> getPredicate(Map<String, Object> objList, Wallet entityList) {
+        return x -> x.getName().equals(objList.get("name"));
     }
 
-    @Override
-    public List<Wallet> doFilter(List<Wallet> entities) {
-        return entities;
-    }
 }

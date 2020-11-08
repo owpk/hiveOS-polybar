@@ -11,8 +11,7 @@ import org.owpk.entities.AbsComponent;
 @Getter
 @Setter
 public class Balance extends AbsComponent {
-    @JsonProperty
-    private String status;
+    @JsonProperty private String status;
     private Double value;
 
 }
