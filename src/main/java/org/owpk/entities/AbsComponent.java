@@ -16,10 +16,10 @@ public abstract class AbsComponent implements Component {
     @SuppressWarnings("unchecked")
     public void execute(List<String> options) {
         Map<String, Object> objGraph = JsonMapper.convert(this, LinkedHashMap.class);
-        objGraph.forEach(standardConsumer(options));
+        objGraph.forEach(defaultBiConsumer(options));
     }
 
-    protected BiConsumer<String, Object> standardConsumer(List<String> options) {
+    protected BiConsumer<String, Object> defaultBiConsumer(List<String> options) {
         return (k,v) -> {
             if (options.size() == 0) {
                 System.out.println(k + " : " + v);

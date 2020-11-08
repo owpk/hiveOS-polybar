@@ -47,9 +47,14 @@ public class App {
       System.out.print("Enter two auth code: ");
       String twoAuth = sc.nextLine();
 
+      System.out.print("Remember?: ");
+      String remember = sc.nextLine();
+
       user.setLogin(login);
       user.setPassword(password);
       user.setTwofa_code(twoAuth);
+      user.setRemember(remember.startsWith("tru"));
+
       return user;
    }
 

@@ -43,20 +43,20 @@ public class CurrentModule implements Module {
             tokenManager.writeToken((String) response.getBody().getObject().get("access_token"),
                     (Integer) response.getBody().getObject().get("expires_in"));
         }
-        System.out.printf("Auth: %s, %d",response.getStatusText(),response.getStatus());
+        System.out.printf("Auth: %s, %d\n",response.getStatusText(),response.getStatus());
     }
 
     @Override
-    public void walletsRequest(Resolver<Component> resolver) throws UnirestException {
+    public <E extends Component> void walletsRequest(Resolver<E> resolver) throws UnirestException {
         if (tokenManager.checkIfExpired()) {
             HttpResponse<JsonNode> response = wallet.getRequest(
                     "/farms/" + properties.getProperty("farmId") + "/wallets",
                     tokenManager.getToken());
 
             if (response.getStatus() == 200) {
-                List<Component> wallets = new ArrayList<>();
+                List<E> wallets = new ArrayList<>();
                 for (Object o : (JSONArray) response.getBody().getObject().get("data")) {
-                    Wallet w = JsonMapper.readFromJson(((JSONObject) o).toString(), Wallet.class);
+                    E w = (E) JsonMapper.readFromJson(((JSONObject) o).toString(), Wallet.class);
                     wallets.add(w);
                 }
                 resolver.resolve(wallets);
