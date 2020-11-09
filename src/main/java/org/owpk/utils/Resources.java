@@ -18,7 +18,7 @@ public class Resources {
     //TODO autogenerate config
     public static class ConfigReader {
         private static final String path = "/home/owpk/hiveclient/";
-        private static final String CONFIG_NAME = "hiveclient.conf";
+        private static final String CONFIG_NAME = "/home/owpk/.config/polybar/scripts/hiveclient.conf";
         private static Properties properties;
         static {
             try(FileInputStream inputStream = new FileInputStream(CONFIG_NAME)) {

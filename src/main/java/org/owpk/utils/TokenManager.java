@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class TokenManager {
-    private final String TEMP_FILE = "tmp";
+    private final String TEMP_FILE = "/home/owpk/.config/polybar/scripts/tmp";
 
     public void writeToken(String token, Integer tokenExpiration) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE))) {
