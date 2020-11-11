@@ -1,9 +1,12 @@
 package org.owpk.entities.apiJson.wallet;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.owpk.entities.AbsComponent;
+import org.owpk.entities.jsonConfig.JsonConfig;
+import org.owpk.utils.Resources;
 
 @JsonAutoDetect
 @AllArgsConstructor
@@ -11,7 +14,20 @@ import org.owpk.entities.AbsComponent;
 @Getter
 @Setter
 public class Balance extends AbsComponent {
-    @JsonProperty private String status;
-    private Double value;
 
+   @JsonIgnore
+   private static final JsonConfig jsonConfig;
+   static {
+      jsonConfig = Resources.ConfigReader.getJsonConfig(
+             Resources.ConfigReader.getJsonConfig("wallet"), "balance");
+   }
+
+   @JsonProperty
+   private String status;
+   private Double value;
+
+   @Override
+   public void execute(JsonConfig jsonConfig) {
+      printFieldsToShow(jsonConfig);
+   }
 }

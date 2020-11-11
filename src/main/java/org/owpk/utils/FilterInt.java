@@ -1,4 +1,4 @@
-package org.owpk;
+package org.owpk.utils;
 
 import org.owpk.entities.Component;
 

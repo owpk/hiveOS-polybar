@@ -1,11 +1,18 @@
 package org.owpk.entities.apiJson.wallet;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.owpk.entities.AbsComponent;
+import org.owpk.entities.jsonConfig.JsonConfig;
+import org.owpk.entities.jsonConfig.JsonData;
+import org.owpk.utils.JsonMapper;
+import org.owpk.utils.Resources;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @JsonAutoDetect
 @AllArgsConstructor
@@ -15,26 +22,41 @@ import java.util.List;
 @ToString(of = "name")
 public class Wallet extends AbsComponent {
 
-    private Long id;
-    @JsonProperty(value = "user_id") private Long userId;
-    private String name;
-    private String source;
-    private String coin;
-    private String wal;
-    @JsonProperty(value = "fetch_balance") private boolean fetchBalance;
-    @JsonProperty(value = "api_key_id")
-    private Integer apiKeyId;
-    private Balance balance;
-    @JsonProperty(value = "pool_balances") private List<PoolBalances> poolBalances;
-    @JsonProperty(value = "fs_count") private Integer fsCount;
-    @JsonProperty(value = "workers_count") private Integer workersCount;
+   private Long id;
+   @JsonProperty(value = "user_id")
+   private Long userId;
+   private String name;
+   private String source;
+   private String coin;
+   private String wal;
+   @JsonProperty(value = "fetch_balance")
+   private boolean fetchBalance;
+   @JsonProperty(value = "api_key_id")
+   private Integer apiKeyId;
+   private Balance balance;
+   @JsonProperty(value = "pool_balances")
+   private List<PoolBalances> poolBalances;
+   @JsonProperty(value = "fs_count")
+   private Integer fsCount;
+   @JsonProperty(value = "workers_count")
+   private Integer workersCount;
 
-    @Override
-    protected void maybeOtherConditions(List<String> options, String key, Object value) {
-        if (checkIfValuePresent(options, "pool_balances") && key.startsWith("pool_balances")) {
-            poolBalances.forEach(x -> x.execute(parseInheritedOptions(options, i -> i.startsWith("pool_balances"))));
-        } else if (checkIfValuePresent(options, "balance") && key.startsWith("balance")) {
-            balance.execute(parseInheritedOptions(options, i -> i.startsWith("balance")));
-        }
-    }
+   @Override
+   protected void maybeOtherConditions(List<String> options, String key, Object value) {
+      if (checkIfValuePresent(options, "pool_balances") && key.startsWith("pool_balances")) {
+         poolBalances.forEach(x -> x.execute(parseInheritedOptions(options, i -> i.startsWith("pool_balances"))));
+      } else if (checkIfValuePresent(options, "balance") && key.startsWith("balance")) {
+         balance.execute(parseInheritedOptions(options, i -> i.startsWith("balance")));
+      }
+   }
+
+   @Override
+   public void execute(JsonConfig jsonConfig) {
+      printFieldsToShow(jsonConfig);
+      for (JsonConfig x : jsonConfig.getEntitiesToShow()) {
+         if (x.getObjectName().equals("pool_balances"))
+            poolBalances.forEach(i -> i.execute(
+                   Resources.ConfigReader.getJsonConfig(x, "pool_balances")));
+      }
+   }
 }

@@ -1,10 +1,11 @@
 package org.owpk.resolver;
 
 import com.mashape.unirest.http.JsonNode;
-import org.owpk.FilterInt;
+import org.owpk.utils.FilterInt;
 import org.owpk.entities.Component;
 import org.owpk.entities.Composite;
 import org.owpk.entities.apiJson.wallet.Wallet;
+import org.owpk.entities.jsonConfig.JsonConfig;
 import org.owpk.utils.JsonMapper;
 import org.owpk.utils.Resources;
 import picocli.CommandLine;
@@ -31,6 +32,9 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
     @CommandLine.Option(names = {"-D","--default"})
     protected boolean defaultPrintPattern;
 
+    @CommandLine.Option(names = {"-c","--config"})
+    protected boolean configJson;
+
     protected String[] args;
 
     public AbsResolver(String[] args) {
@@ -48,11 +52,16 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
             Composite composite = new Composite(doFilter(list));
             if (defaultPrintPattern) Resources.ConfigReader.getProps().setProperty("format", "%s : %s\n");
             composite.useDelimiter(delimiter);
-            composite.execute(getOptionList());
+            if (configJson) {
+                executeByJsonConfig(composite);
+            }
+            else composite.execute(getOptionList());
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
     }
+
+    protected abstract void executeByJsonConfig(Composite composite);
 
     public void printError(JsonNode body, int status) {
         System.out.printf("Err: %s, %d", body, status);
@@ -61,7 +70,7 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
     public List<E> doFilter(List<E> entities) {
         if (entities.size() == 0) return entities;
 
-        Map<String, List<String>> map = parseFilterOptions();
+        Map<String, List<String>> map = configJson ? new HashMap<>() : parseFilterOptions();
         List<Map<String, Object>> lst = JsonMapper.convert(entities);
 
         lst.forEach(x -> map.forEach((k, v) -> {
@@ -91,5 +100,10 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
      * @see org.owpk.resolver.WalletSpecResolver#getPredicate(Map, Wallet)
      */
     protected abstract Predicate<E> getPredicate(Map<String, Object> objList, E entityList);
+
+    /**
+     * Same for json config parameters
+     */
+    protected abstract Predicate<JsonConfig> getJsonConfigPredicate(JsonConfig jsonConfig);
 
 }

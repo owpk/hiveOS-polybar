@@ -1,5 +1,7 @@
 package org.owpk.entities;
 
+import org.owpk.entities.jsonConfig.JsonConfig;
+import org.owpk.entities.jsonConfig.JsonData;
 import org.owpk.utils.JsonMapper;
 import org.owpk.utils.Resources;
 
@@ -29,6 +31,15 @@ public abstract class AbsComponent implements Component {
             } else
                 maybeOtherConditions(options, k, v);
         };
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void printFieldsToShow(JsonConfig jsonConfig) {
+        Map<String, Object> objGraph = JsonMapper.convert(this, LinkedHashMap.class);
+        objGraph.forEach((k, v) -> {
+            if (jsonConfig.getFieldsToShow().contains(k))
+                System.out.printf((String) Resources.ConfigReader.getProps().get("format"), k, v);
+        });
     }
 
     /**

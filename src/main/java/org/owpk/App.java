@@ -23,12 +23,12 @@ public class App {
             module.authRequest(user);
             break;
          case "-w":
-            module.walletsRequest(new WalletSpecResolver(getOther(args)));
+            module.walletsRequest(new WalletSpecResolver(getOtherArgs(args)));
             break;
       }
    }
 
-   private static String[] getOther(String[] args){
+   private static String[] getOtherArgs(String[] args){
       final String[] _args = new String[args.length - 1];
       System.arraycopy(args, 1, _args, 0, args.length - 1);
       return _args;
