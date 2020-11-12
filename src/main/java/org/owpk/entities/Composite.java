@@ -9,6 +9,7 @@ import org.owpk.utils.JsonMapper;
 import org.owpk.utils.Resources;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 @Getter
 @Setter
@@ -25,16 +26,23 @@ public class Composite<T extends Component> implements Component, CliFilter<T>, 
    @Override
    public void execute(List<String> options) {
       String delimiter = (String) Resources.ConfigReader.getProps().get("delimiter");
-      list.forEach(x -> {
-         x.execute(options);
-         System.out.print(this.delimiter ? delimiter : "");
-      });
+      if (list != null) {
+         list.forEach(x -> {
+            x.execute(options);
+            System.out.print(this.delimiter ? delimiter : "");
+         });
+      } else System.out.printf((String) Resources.ConfigReader.getProps().get("format"), "data", "N/A");
    }
 
    @Override
    public void execute(JsonConfig jsonConfig) {
-      if (list != null)
-         list.forEach(x -> x.execute(jsonConfig));
+      String delimiter = (String) Resources.ConfigReader.getProps().get("delimiter");
+      if (list != null) {
+         list.forEach(x -> {
+            x.execute(jsonConfig);
+            System.out.print(this.delimiter ? delimiter : "");
+         });
+      }
       else System.out.printf((String) Resources.ConfigReader.getProps().get("format"), "data", "N/A");
    }
 

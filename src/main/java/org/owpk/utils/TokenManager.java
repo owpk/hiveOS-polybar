@@ -3,28 +3,34 @@ package org.owpk.utils;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @ToString
 public class TokenManager {
-    private final String TEMP_FILE = "/home/owpk/.config/polybar/scripts/tmp";
+    private final String TEMP_FILE = Resources.CURRENT_DIR + "/tmp";
 
     public void writeToken(String token, Integer tokenExpiration) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE))) {
+        File temp = new File(TEMP_FILE);
+        temp.setWritable(true);
+        temp.setReadable(true);
+        try (PrintWriter writer = new PrintWriter(temp)) {
             String dayX = String.valueOf(new Date().getTime());
-            writer.write(token + "\n");
-            writer.write(tokenExpiration + "\n");
-            writer.write(dayX + "\n");
+            writer.write(token + "@");
+            writer.write(tokenExpiration + "@");
+            writer.write(dayX + "@");
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            temp.setWritable(false);
+            temp.setReadable(false);
         }
     }
 
@@ -51,12 +57,18 @@ public class TokenManager {
 
     private List<String> getTempData() {
         List<String> lines = new ArrayList<>();
-        try {
-            lines = Files.readAllLines(Paths.get(TEMP_FILE));
-        } catch (Exception e) {
-            System.out.println("AuthError");
-        }
+        File temp = new File(TEMP_FILE);
+            try {
+                temp.setReadable(true);
+                lines = Arrays.stream(new String(Files.readAllBytes(temp.toPath()))
+                       .split("@"))
+                       .collect(Collectors.toList());
+            } catch (IOException e) {
+                System.out.println("AuthError");
+                e.printStackTrace();
+            } finally {
+                temp.setReadable(false);
+            }
         return lines;
     }
-
 }

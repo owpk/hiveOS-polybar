@@ -4,27 +4,37 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.owpk.entities.jsonConfig.JsonConfig;
 import org.owpk.entities.jsonConfig.JsonData;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Properties;
 
 public class Resources {
-    private static final String PROTOCOL = "https://";
-    private static final String HOST = "api2.hiveos.farm";
-    private static final String BASE_PATH = "/api/v2";
-    private static final String TARGET = PROTOCOL + HOST + BASE_PATH;
+    public static final String API_PROTOCOL = "https://";
+    public static final String API_HOST = "api2.hiveos.farm";
+    public static final String API_BASE_PATH = "/api/v2";
+    public static final String API_TARGET = API_PROTOCOL + API_HOST + API_BASE_PATH;
+    public static final String HOME = System.getProperty("user.home");
+    public static File CURRENT_DIR;
 
-    public static String getTARGET() {
-        return TARGET;
+    static {
+        try {
+            CURRENT_DIR = new File(
+                   Resources.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
+                   .getParentFile();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     //TODO config validator
     //TODO autogenerate config
     public static class ConfigReader {
-        private static final String path = "/home/owpk/hiveclient/";
-        private static final String CONFIG_NAME = "/home/owpk/.config/polybar/scripts/hiveclient.conf";
-        private static final String JSON_CONFIG_NAME = "/home/owpk/.config/polybar/scripts/hiveclient.settings";
+        private static final String PATH = CURRENT_DIR.getPath();
+        private static final String CONFIG_NAME = PATH + "/hiveclient.conf";
+        private static final String JSON_CONFIG_NAME = PATH + "/settings.json";
         private static Properties properties;
         private static JsonData jsonConfigList;
 
