@@ -3,17 +3,16 @@ package org.owpk.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.owpk.entities.jsonConfig.JsonConfig;
-import org.owpk.entities.jsonConfig.JsonFilter;
+import org.owpk.entities.jsonConfig.JsonConfigFilter;
 import org.owpk.utils.CliFilter;
 import org.owpk.utils.JsonMapper;
 import org.owpk.utils.Resources;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 @Getter
 @Setter
-public class Composite<T extends Component> implements Component, CliFilter<T>, JsonFilter {
+public class Composite<T extends Component> implements Component, CliFilter<T>, JsonConfigFilter {
 
    protected List<T> list;
 
