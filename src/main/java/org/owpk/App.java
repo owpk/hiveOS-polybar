@@ -1,12 +1,10 @@
 package org.owpk;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.owpk.entities.Component;
 import org.owpk.entities.apiJson.auth.User;
 import org.owpk.entities.apiJson.wallet.Wallet;
 import org.owpk.module.CurrentModule;
-import org.owpk.resolver.AbsResolver;
-import org.owpk.resolver.WalletSpecResolver;
+import org.owpk.resolver.Resolver;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -23,8 +21,7 @@ public class App {
             module.authRequest(user);
             break;
          case "-w":
-            module.walletsRequest(
-                   new WalletSpecResolver(getOtherArgs(args), "wallet"));
+            module.walletsRequest(new Resolver<>(getOtherArgs(args), "wallet"));
             break;
       }
    }
