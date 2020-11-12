@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.owpk.entities.AbsComponent;
+import org.owpk.entities.Composite;
 import org.owpk.entities.jsonConfig.JsonConfig;
 import org.owpk.entities.jsonConfig.JsonData;
 import org.owpk.utils.JsonMapper;
@@ -54,8 +55,11 @@ public class Wallet extends AbsComponent {
    public void execute(JsonConfig jsonConfig) {
       printFieldsToShow(jsonConfig);
       for (JsonConfig x : jsonConfig.getEntitiesToShow()) {
-         if (x.getObjectName().equals("pool_balances"))
-            poolBalances.forEach(i -> i.execute(x));
+         if (x.getObjectName().equals("pool_balances")) {
+            Composite<PoolBalances> poolBalancesComposite = new Composite<>(poolBalances);
+            poolBalancesComposite.doFilter(x);
+            poolBalancesComposite.execute(x);
+         }
       }
    }
 }

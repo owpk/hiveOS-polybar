@@ -12,6 +12,7 @@ import java.util.*;
 @NoArgsConstructor
 @JsonAutoDetect
 @ToString
+@AllArgsConstructor
 public class JsonConfig implements Component {
 
    private String objectName;
@@ -20,18 +21,11 @@ public class JsonConfig implements Component {
    @JsonProperty
    private List<JsonConfig> entitiesToShow;
 
-   public JsonConfig(String objectName, Map<String, String> filterBy, List<String> fieldsToShow, List<JsonConfig> entitiesToShow) {
-      this.objectName = objectName;
-      this.filterBy = filterBy;
-      this.fieldsToShow = fieldsToShow == null ? Collections.emptyList() : fieldsToShow;
-      this.entitiesToShow = entitiesToShow == null ? Collections.emptyList() : entitiesToShow;
-   }
-
    public JsonConfig(String objectName, Map<String, String> filterBy, List<String> fieldsToShow) {
       this.objectName = objectName;
       this.filterBy = filterBy;
-      this.fieldsToShow = fieldsToShow == null ? Collections.emptyList() : fieldsToShow;
-      this.entitiesToShow = new ArrayList<>();
+      this.fieldsToShow = fieldsToShow;
+      this.entitiesToShow = Collections.emptyList();
    }
 
    @Override

@@ -54,12 +54,9 @@ public class Composite<T extends Component> implements Component, FilterInt<T> {
       }));
    }
 
-   @Override
    @SuppressWarnings("unchecked")
-   public void doFilter(JsonConfig jsonConfig) {
-      if (list.size() == 0 || jsonConfig.getFilterBy().size() == 0) return;
-      Map<String, String> optLst = jsonConfig.getFilterBy();
-      optLst.forEach((k, v) -> {
+   private void defaultFilter(Map<String, String> filterDefinition) {
+      filterDefinition.forEach((k, v) -> {
          Iterator<T> iterator = list.iterator();
          while (iterator.hasNext()) {
             T obj = iterator.next();
@@ -73,5 +70,12 @@ public class Composite<T extends Component> implements Component, FilterInt<T> {
             });
          }
       });
+   }
+
+   @Override
+   public void doFilter(JsonConfig jsonConfig) {
+      if (list.size() == 0 || jsonConfig.getFilterBy() == null || jsonConfig.getFilterBy().size() == 0) return;
+      Map<String, String> optLst = jsonConfig.getFilterBy();
+      defaultFilter(optLst);
    }
 }
