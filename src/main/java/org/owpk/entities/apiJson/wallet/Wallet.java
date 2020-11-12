@@ -55,8 +55,7 @@ public class Wallet extends AbsComponent {
       printFieldsToShow(jsonConfig);
       for (JsonConfig x : jsonConfig.getEntitiesToShow()) {
          if (x.getObjectName().equals("pool_balances"))
-            poolBalances.forEach(i -> i.execute(
-                   Resources.ConfigReader.getJsonConfig(x, "pool_balances")));
+            poolBalances.forEach(i -> i.execute(x));
       }
    }
 }

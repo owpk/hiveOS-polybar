@@ -2,6 +2,7 @@ package org.owpk.resolver;
 
 
 import org.owpk.entities.Composite;
+import org.owpk.entities.apiJson.wallet.PoolBalances;
 import org.owpk.entities.apiJson.wallet.Wallet;
 import org.owpk.entities.jsonConfig.JsonConfig;
 import org.owpk.entities.jsonConfig.JsonData;
@@ -17,13 +18,13 @@ import java.util.stream.Collectors;
 
 public class WalletSpecResolver extends AbsResolver<Wallet> {
 
-    public WalletSpecResolver(String[] args) {
-        super(args);
+    public WalletSpecResolver(String[] args, String name) {
+        super(args, name);
     }
 
     @Override
     protected Predicate<JsonConfig> getJsonConfigPredicate(JsonConfig jsonConfig) {
-        return x -> x.getObjectName().equals("wallet");
+        return x -> x.getObjectName().equals(configName);
     }
 
     @Override
@@ -32,19 +33,24 @@ public class WalletSpecResolver extends AbsResolver<Wallet> {
     }
 
     @Override
-    protected void executeByJsonConfig(Composite composite) {
-        composite.execute(Resources.ConfigReader.getJsonConfig("wallet"));
-    }
-
-    @Override
-    public List<Wallet> doFilter(List<Wallet> entities) {
-        JsonConfig jsonConfig = Resources.ConfigReader.getJsonConfig("wallet");
-        List<JsonConfig> options = jsonConfig.getEntitiesToShow();
-        for (JsonConfig cfg : options) {
-            if (cfg.getObjectName().equals("pool_balances")) {
-
+    public void resolve(List<Wallet> list) {
+        try {
+            CommandLine.ParseResult parseResult = new CommandLine(this).parseArgs(args);
+            Composite<Wallet> composite = new Composite<>(list);
+            if (defaultPrintPattern)
+                Resources.ConfigReader.getProps().setProperty("format", "%s : %s\n");
+            composite.useDelimiter(delimiter);
+            if (configJson) {
+                JsonConfig cfg = Resources.ConfigReader.getJsonConfig(configName);
+                composite.doFilter(cfg);
+                composite.execute(cfg);
             }
+            else {
+                composite.doFilter(parseFilterOptions());
+                composite.execute(getOptionList());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
         }
-        return entities;
     }
 }

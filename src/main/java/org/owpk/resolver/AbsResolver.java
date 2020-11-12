@@ -14,7 +14,8 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class AbsResolver<E extends Component> implements Resolver<E>, FilterInt<E> {
+public abstract class AbsResolver<E extends Component> implements Resolver<E> {
+    protected String configName;
 
     @CommandLine.Option(names = {"-f", "--filter"},
             paramLabel = "FILTER",
@@ -37,7 +38,8 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
 
     protected String[] args;
 
-    public AbsResolver(String[] args) {
+    public AbsResolver(String[] args, String name) {
+        this.configName = name;
         this.args = args;
     }
 
@@ -45,40 +47,8 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E>, F
         return parseOptions(arguments, ",");
     }
 
-    @Override
-    public void resolve(List<E> list) {
-        try {
-            CommandLine.ParseResult parseResult = new CommandLine(this).parseArgs(args);
-            Composite composite = new Composite(doFilter(list));
-            if (defaultPrintPattern) Resources.ConfigReader.getProps().setProperty("format", "%s : %s\n");
-            composite.useDelimiter(delimiter);
-            if (configJson) {
-                executeByJsonConfig(composite);
-            }
-            else composite.execute(getOptionList());
-        } catch (Exception e) {
-            System.out.println(e.getLocalizedMessage());
-        }
-    }
-
-    protected abstract void executeByJsonConfig(Composite composite);
-
     public void printError(JsonNode body, int status) {
         System.out.printf("Err: %s, %d", body, status);
-    }
-
-    public List<E> doFilter(List<E> entities) {
-        if (entities.size() == 0) return entities;
-
-        Map<String, List<String>> map = configJson ? new HashMap<>() : parseFilterOptions();
-        List<Map<String, Object>> lst = JsonMapper.convert(entities);
-
-        lst.forEach(x -> map.forEach((k, v) -> {
-            if (!v.contains((String) x.get(k))) {
-                entities.removeIf(i -> getPredicate(x, i).test(i));
-            }
-        }));
-        return entities;
     }
 
     protected Map<String, List<String>> parseFilterOptions() {

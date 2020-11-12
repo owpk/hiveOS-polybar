@@ -34,7 +34,6 @@ public class Resources {
                 properties = new Properties();
                 properties.load(inputStream);
                 jsonConfigList = new JsonMapper().readValue(jsonData, JsonData.class);
-                System.out.println(jsonConfigList); //!!!!
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -23,7 +23,8 @@ public class App {
             module.authRequest(user);
             break;
          case "-w":
-            module.walletsRequest(new WalletSpecResolver(getOtherArgs(args)));
+            module.walletsRequest(
+                   new WalletSpecResolver(getOtherArgs(args), "wallet"));
             break;
       }
    }

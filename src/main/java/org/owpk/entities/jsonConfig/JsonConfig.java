@@ -3,36 +3,34 @@ package org.owpk.entities.jsonConfig;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.owpk.entities.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @JsonAutoDetect
 @ToString
-public class JsonConfig {
+public class JsonConfig implements Component {
 
    private String objectName;
-   private List<Map<String, String>> filterBy;
+   private Map<String, String> filterBy;
    private List<String> fieldsToShow;
    @JsonProperty
    private List<JsonConfig> entitiesToShow;
 
-   public JsonConfig(String objectName, List<Map<String, String>> filterBy, List<String> fieldsToShow, List<JsonConfig> entitiesToShow) {
+   public JsonConfig(String objectName, Map<String, String> filterBy, List<String> fieldsToShow, List<JsonConfig> entitiesToShow) {
       this.objectName = objectName;
       this.filterBy = filterBy;
-      this.fieldsToShow = fieldsToShow == null ? new ArrayList<>() : fieldsToShow;
-      this.entitiesToShow = entitiesToShow == null ? new ArrayList<>() : entitiesToShow;
+      this.fieldsToShow = fieldsToShow == null ? Collections.emptyList() : fieldsToShow;
+      this.entitiesToShow = entitiesToShow == null ? Collections.emptyList() : entitiesToShow;
    }
 
-   public JsonConfig(String objectName, List<Map<String, String>> filterBy, List<String> fieldsToShow) {
+   public JsonConfig(String objectName, Map<String, String> filterBy, List<String> fieldsToShow) {
       this.objectName = objectName;
       this.filterBy = filterBy;
-      this.fieldsToShow = fieldsToShow == null ? new ArrayList<>() : fieldsToShow;
+      this.fieldsToShow = fieldsToShow == null ? Collections.emptyList() : fieldsToShow;
       this.entitiesToShow = new ArrayList<>();
    }
 
@@ -47,5 +45,15 @@ public class JsonConfig {
    @Override
    public int hashCode() {
       return Objects.hash(objectName);
+   }
+
+   @Override
+   public void execute(List<String> options) {
+
+   }
+
+   @Override
+   public void execute(JsonConfig jsonConfig) {
+      entitiesToShow.forEach(x -> execute(jsonConfig));
    }
 }

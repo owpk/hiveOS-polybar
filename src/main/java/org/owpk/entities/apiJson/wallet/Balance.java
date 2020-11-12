@@ -15,13 +15,6 @@ import org.owpk.utils.Resources;
 @Setter
 public class Balance extends AbsComponent {
 
-   @JsonIgnore
-   private static final JsonConfig jsonConfig;
-   static {
-      jsonConfig = Resources.ConfigReader.getJsonConfig(
-             Resources.ConfigReader.getJsonConfig("wallet"), "balance");
-   }
-
    @JsonProperty
    private String status;
    private Double value;
