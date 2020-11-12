@@ -2,7 +2,6 @@ package org.owpk;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.owpk.entities.apiJson.auth.User;
-import org.owpk.entities.apiJson.wallet.Wallet;
 import org.owpk.module.CurrentModule;
 import org.owpk.resolver.Resolver;
 

@@ -1,7 +1,6 @@
 package org.owpk.utils;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import lombok.Getter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

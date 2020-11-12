@@ -6,13 +6,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.owpk.entities.Component;
 import org.owpk.entities.Composite;
-import org.owpk.entities.apiJson.wallet.Wallet;
 import org.owpk.entities.jsonConfig.JsonConfig;
 import org.owpk.utils.Resources;
 import picocli.CommandLine;
 
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Resolver<E extends Component> {

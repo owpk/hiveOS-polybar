@@ -6,7 +6,6 @@ import org.owpk.entities.Component;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

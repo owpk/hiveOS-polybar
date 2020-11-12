@@ -1,19 +1,13 @@
 package org.owpk.entities.apiJson.wallet;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.owpk.entities.AbsComponent;
 import org.owpk.entities.Composite;
 import org.owpk.entities.jsonConfig.JsonConfig;
-import org.owpk.entities.jsonConfig.JsonData;
-import org.owpk.utils.JsonMapper;
-import org.owpk.utils.Resources;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @JsonAutoDetect
 @AllArgsConstructor

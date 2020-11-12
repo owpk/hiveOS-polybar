@@ -1,6 +1,5 @@
 package org.owpk.entities.apiJson.wallet;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.owpk.entities.AbsComponent;
 import org.owpk.entities.jsonConfig.JsonConfig;
-import org.owpk.entities.jsonConfig.JsonData;
-import org.owpk.utils.Resources;
-
-import java.util.List;
 
 @Getter
 @Setter
