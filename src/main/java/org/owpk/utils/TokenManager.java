@@ -2,6 +2,8 @@ package org.owpk.utils;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @ToString
 public class TokenManager {
+    private static final Logger log = LogManager.getLogger(TokenManager.class);
     private final String TEMP_FILE = Resources.CURRENT_DIR + "/tmp";
 
     public void writeToken(String token, Integer tokenExpiration) {
@@ -27,7 +30,7 @@ public class TokenManager {
             writer.write(tokenExpiration + "@");
             writer.write(dayX + "@");
         } catch (IOException e) {
-            e.printStackTrace();
+            log.log(Resources.getLevel(), e);
         } finally {
             temp.setWritable(false);
             temp.setReadable(false);
@@ -64,8 +67,8 @@ public class TokenManager {
                        .split("@"))
                        .collect(Collectors.toList());
             } catch (IOException e) {
-                System.out.println("AuthError");
-                e.printStackTrace();
+                System.out.println("AuthError try --debug");
+                log.log(Resources.getLevel(), e);
             } finally {
                 temp.setReadable(false);
             }

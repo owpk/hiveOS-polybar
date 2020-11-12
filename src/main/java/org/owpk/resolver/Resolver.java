@@ -1,6 +1,9 @@
 package org.owpk.resolver;
 
 import com.mashape.unirest.http.JsonNode;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.owpk.entities.Component;
 import org.owpk.entities.Composite;
 import org.owpk.entities.apiJson.wallet.Wallet;
@@ -13,6 +16,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Resolver<E extends Component> {
+    private static final Logger log = LogManager.getLogger(Resolver.class);
     protected String configName;
 
     @CommandLine.Option(names = {"-f", "--filter"},
@@ -34,6 +38,9 @@ public class Resolver<E extends Component> {
     @CommandLine.Option(names = {"-c","--config"})
     protected boolean configJson;
 
+    @CommandLine.Option(names = "--debug")
+    protected boolean debug;
+
     protected String[] args;
 
     public Resolver(String[] args, String name) {
@@ -43,11 +50,13 @@ public class Resolver<E extends Component> {
 
     public void resolve(List<E> list) {
         try {
+            if (debug) Resources.setLevel(Level.ERROR);
+            if (defaultPrintPattern) Resources.ConfigReader.getProps().setProperty("format", "%s : %s\n");
+
             CommandLine.ParseResult parseResult = new CommandLine(this).parseArgs(args);
             Composite<E> composite = new Composite<>(list);
-            if (defaultPrintPattern)
-                Resources.ConfigReader.getProps().setProperty("format", "%s : %s\n");
             composite.useDelimiter(delimiter);
+
             if (configJson) {
                 JsonConfig cfg = Resources.ConfigReader.getJsonConfig(configName);
                 composite.doFilter(cfg);
@@ -58,8 +67,7 @@ public class Resolver<E extends Component> {
                 composite.execute(getOptionList());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getLocalizedMessage());
+            log.log(Resources.getLevel(), e);
         }
     }
 

@@ -1,6 +1,10 @@
 package org.owpk.utils;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import lombok.Getter;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.owpk.entities.jsonConfig.JsonConfig;
 import org.owpk.entities.jsonConfig.JsonData;
 
@@ -8,24 +12,35 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Properties;
-
 public class Resources {
+    private static final Logger log = LogManager.getLogger(Resources.class);
     public static final String API_PROTOCOL = "https://";
     public static final String API_HOST = "api2.hiveos.farm";
     public static final String API_BASE_PATH = "/api/v2";
     public static final String API_TARGET = API_PROTOCOL + API_HOST + API_BASE_PATH;
     public static final String HOME = System.getProperty("user.home");
     public static File CURRENT_DIR;
+    private static Level level = Level.INFO;
+
+    public static Level getLevel() {
+        return level;
+    }
+
+    public static void setLevel(Level level) {
+        Resources.level = level;
+    }
 
     static {
         try {
-            CURRENT_DIR = new File(
-                   Resources.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
-                   .getParentFile();
+            String path = Resources.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            String decoded = URLDecoder.decode(path, StandardCharsets.UTF_8);
+            CURRENT_DIR = new File(decoded).getParentFile();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 
@@ -45,7 +60,7 @@ public class Resources {
                 properties.load(inputStream);
                 jsonConfigList = new JsonMapper().readValue(jsonData, JsonData.class);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
 
