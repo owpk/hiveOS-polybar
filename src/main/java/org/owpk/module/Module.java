@@ -8,7 +8,7 @@ import org.owpk.resolver.Resolver;
 import java.io.IOException;
 
 public interface Module {
-    void authRequest(User user) throws IOException, UnirestException;
+   void authRequest(User user) throws IOException, UnirestException;
 
-    void walletsRequest(Resolver<Wallet> resolver) throws UnirestException;
+   void walletsRequest(Resolver<Wallet> resolver) throws UnirestException;
 }

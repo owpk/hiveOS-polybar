@@ -28,6 +28,7 @@ public class CurrentModule implements Module {
    private final Controller wallet;
    private final TokenManager tokenManager;
    private final Properties properties;
+
    public CurrentModule() {
       properties = Resources.ConfigReader.getProps();
       auth = new AuthController();
@@ -54,7 +55,7 @@ public class CurrentModule implements Module {
    public void walletsRequest(Resolver<Wallet> resolver) {
       if (tokenManager.checkIfExpired()) {
          try {
-            HttpResponse<JsonNode> response  = wallet.getRequest(
+            HttpResponse<JsonNode> response = wallet.getRequest(
                    "/farms/" + properties.getProperty("farmId") + "/wallets",
                    tokenManager.getToken());
             if (response.getStatus() == 200) {

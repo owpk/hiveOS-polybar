@@ -8,15 +8,15 @@ import org.owpk.utils.Resources;
 
 public class WalletController implements Controller {
 
-    public HttpResponse<JsonNode> getRequest(String resource, String authToken) throws UnirestException {
-        return Unirest.get(Resources.API_TARGET + resource)
-                .header("accept", "application/json")
-                .header("Authorization", "Bearer " + authToken)
-                .asJson();
-    }
+   public HttpResponse<JsonNode> getRequest(String resource, String authToken) throws UnirestException {
+      return Unirest.get(Resources.API_TARGET + resource)
+             .header("accept", "application/json")
+             .header("Authorization", "Bearer " + authToken)
+             .asJson();
+   }
 
-    //TODO
-    public HttpResponse<JsonNode> postRequest(String basePath, String userJson) {
-        return null;
-    }
+   //TODO
+   public HttpResponse<JsonNode> postRequest(String basePath, String userJson) {
+      return null;
+   }
 }

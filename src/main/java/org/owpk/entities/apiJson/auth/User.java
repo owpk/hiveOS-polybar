@@ -10,8 +10,8 @@ import lombok.*;
 @Setter
 @ToString
 public class User {
-    private String login;
-    private String password;
-    private String twofa_code;
-    private boolean remember;
+   private String login;
+   private String password;
+   private String twofa_code;
+   private boolean remember;
 }

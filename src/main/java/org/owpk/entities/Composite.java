@@ -41,8 +41,7 @@ public class Composite<T extends Component> implements Component, CliFilter<T>, 
             x.execute(jsonConfig);
             System.out.print(this.delimiter ? delimiter : "");
          });
-      }
-      else System.out.printf((String) Resources.ConfigReader.getProps().get("format"), "data", "N/A");
+      } else System.out.printf((String) Resources.ConfigReader.getProps().get("format"), "data", "N/A");
    }
 
    public void useDelimiter(boolean delimiter) {

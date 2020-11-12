@@ -20,27 +20,27 @@ import java.util.stream.IntStream;
  */
 public class Filter {
 
-    @Deprecated
-    public List<PoolBalances> parseRow(String[] args, HttpResponse<JsonNode> response) {
-        ObjectMapper mapper = new ObjectMapper();
-        return IntStream.range(0, args.length - 1)
-                .mapToObj(i -> // :
-                        ((JSONArray) response.getBody().getObject().get("data")).getJSONObject(i))
-                .filter(x -> Arrays.asList(args).subList(2, args.length).contains((String) x.get("name")))
-                .map(x -> {
-                    try {
-                        return mapper.readValue(((JSONArray) x.get("pool_balances")).getJSONObject(0).toString(), PoolBalances.class);
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                    return new PoolBalances();
-                }).collect(Collectors.toList());
-    }
+   @Deprecated
+   public List<PoolBalances> parseRow(String[] args, HttpResponse<JsonNode> response) {
+      ObjectMapper mapper = new ObjectMapper();
+      return IntStream.range(0, args.length - 1)
+             .mapToObj(i -> // :
+                    ((JSONArray) response.getBody().getObject().get("data")).getJSONObject(i))
+             .filter(x -> Arrays.asList(args).subList(2, args.length).contains((String) x.get("name")))
+             .map(x -> {
+                try {
+                   return mapper.readValue(((JSONArray) x.get("pool_balances")).getJSONObject(0).toString(), PoolBalances.class);
+                } catch (JsonProcessingException e) {
+                   e.printStackTrace();
+                }
+                return new PoolBalances();
+             }).collect(Collectors.toList());
+   }
 
-    @Deprecated
-    public static final Consumer<Wallet> pullUsdMinimalInfo = x -> System.out.println(
-            (x.getPoolBalances() != null ?
-                    (x.getPoolBalances().stream()
-                            .map(i -> String.format("%s : %s$", i.getPool(), i.getValueUsd()))
-                            .collect(Collectors.joining())) : "N/A"));
+   @Deprecated
+   public static final Consumer<Wallet> pullUsdMinimalInfo = x -> System.out.println(
+          (x.getPoolBalances() != null ?
+                 (x.getPoolBalances().stream()
+                        .map(i -> String.format("%s : %s$", i.getPool(), i.getValueUsd()))
+                        .collect(Collectors.joining())) : "N/A"));
 }

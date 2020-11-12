@@ -6,7 +6,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public interface Controller {
 
-    HttpResponse<JsonNode> getRequest(String resource, String authToken) throws UnirestException;
-    HttpResponse<JsonNode> postRequest(String resource, String jsonBody) throws UnirestException;
+   HttpResponse<JsonNode> getRequest(String resource, String authToken) throws UnirestException;
+
+   HttpResponse<JsonNode> postRequest(String resource, String jsonBody) throws UnirestException;
 
 }
