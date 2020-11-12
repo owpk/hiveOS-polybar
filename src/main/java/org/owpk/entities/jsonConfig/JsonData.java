@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.owpk.entities.Component;
 
 import java.util.List;
 
@@ -15,17 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonAutoDetect
 @ToString
-public class JsonData implements Component {
+public class JsonData {
    @JsonProperty(value = "data")
    private List<JsonConfig> data;
-
-   @Override
-   public void execute(List<String> options) {
-
-   }
-
-   @Override
-   public void execute(JsonConfig jsonConfig) {
-      data.forEach(x -> x.execute(jsonConfig));
-   }
 }

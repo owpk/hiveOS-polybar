@@ -2,9 +2,9 @@ package org.owpk.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.owpk.entities.apiJson.wallet.Wallet;
 import org.owpk.entities.jsonConfig.JsonConfig;
-import org.owpk.utils.FilterInt;
+import org.owpk.entities.jsonConfig.JsonFilter;
+import org.owpk.utils.CliFilter;
 import org.owpk.utils.JsonMapper;
 import org.owpk.utils.Resources;
 
@@ -12,7 +12,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class Composite<T extends Component> implements Component, FilterInt<T> {
+public class Composite<T extends Component> implements Component, CliFilter<T>, JsonFilter {
 
    protected List<T> list;
 
@@ -33,7 +33,9 @@ public class Composite<T extends Component> implements Component, FilterInt<T> {
 
    @Override
    public void execute(JsonConfig jsonConfig) {
-      list.forEach(x -> x.execute(jsonConfig));
+      if (list != null)
+         list.forEach(x -> x.execute(jsonConfig));
+      else System.out.printf((String) Resources.ConfigReader.getProps().get("format"), "data", "N/A");
    }
 
    public void useDelimiter(boolean delimiter) {
@@ -42,20 +44,12 @@ public class Composite<T extends Component> implements Component, FilterInt<T> {
 
    @Override
    public void doFilter(Map<String, List<String>> optionMap) {
-      if (list.size() == 0) return;
-
-      Map<String, List<String>> map = optionMap;
-      List<Map<String, Object>> lst = JsonMapper.convert(list);
-
-      lst.forEach(x -> map.forEach((k, v) -> {
-         if (!v.contains((String) x.get(k))) {
-//                list.removeIf(i -> getPredicate(x, i).test(i));
-         }
-      }));
+      if (list == null || list.size() == 0) return;
+      defaultFilter(optionMap);
    }
 
    @SuppressWarnings("unchecked")
-   private void defaultFilter(Map<String, String> filterDefinition) {
+   private void defaultFilter(Map<String, List<String>> filterDefinition) {
       filterDefinition.forEach((k, v) -> {
          Iterator<T> iterator = list.iterator();
          while (iterator.hasNext()) {
@@ -63,9 +57,8 @@ public class Composite<T extends Component> implements Component, FilterInt<T> {
             Map<String, Object> objGraph = JsonMapper.convert(obj, LinkedHashMap.class);
             objGraph.forEach((ok, ov) -> {
                if (ok.equals(k)) {
-                  if (!ov.equals(v)) {
+                  if (!v.contains(ov.toString()))
                      iterator.remove();
-                  }
                }
             });
          }
@@ -74,8 +67,11 @@ public class Composite<T extends Component> implements Component, FilterInt<T> {
 
    @Override
    public void doFilter(JsonConfig jsonConfig) {
-      if (list.size() == 0 || jsonConfig.getFilterBy() == null || jsonConfig.getFilterBy().size() == 0) return;
-      Map<String, String> optLst = jsonConfig.getFilterBy();
+      if (list == null
+             || list.size() == 0
+             || jsonConfig.getFilterBy() == null
+             || jsonConfig.getFilterBy().size() == 0) return;
+      Map<String, List<String>> optLst = jsonConfig.getFilterBy();
       defaultFilter(optLst);
    }
 }

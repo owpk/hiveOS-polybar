@@ -1,5 +1,5 @@
 package org.owpk.entities.jsonConfig;
 
 public interface JsonFilter {
-   void doFilter();
+   void doFilter(JsonConfig jsonConfig);
 }

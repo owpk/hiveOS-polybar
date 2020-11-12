@@ -3,9 +3,11 @@ package org.owpk.entities.jsonConfig;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.owpk.entities.Component;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -13,15 +15,15 @@ import java.util.*;
 @JsonAutoDetect
 @ToString
 @AllArgsConstructor
-public class JsonConfig implements Component {
+public class JsonConfig {
 
    private String objectName;
-   private Map<String, String> filterBy;
+   private Map<String, List<String>> filterBy;
    private List<String> fieldsToShow;
    @JsonProperty
    private List<JsonConfig> entitiesToShow;
 
-   public JsonConfig(String objectName, Map<String, String> filterBy, List<String> fieldsToShow) {
+   public JsonConfig(String objectName, Map<String, List<String>> filterBy, List<String> fieldsToShow) {
       this.objectName = objectName;
       this.filterBy = filterBy;
       this.fieldsToShow = fieldsToShow;
@@ -41,13 +43,4 @@ public class JsonConfig implements Component {
       return Objects.hash(objectName);
    }
 
-   @Override
-   public void execute(List<String> options) {
-
-   }
-
-   @Override
-   public void execute(JsonConfig jsonConfig) {
-      entitiesToShow.forEach(x -> execute(jsonConfig));
-   }
 }

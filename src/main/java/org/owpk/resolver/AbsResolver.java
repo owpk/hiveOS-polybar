@@ -1,12 +1,10 @@
 package org.owpk.resolver;
 
 import com.mashape.unirest.http.JsonNode;
-import org.owpk.utils.FilterInt;
 import org.owpk.entities.Component;
 import org.owpk.entities.Composite;
 import org.owpk.entities.apiJson.wallet.Wallet;
 import org.owpk.entities.jsonConfig.JsonConfig;
-import org.owpk.utils.JsonMapper;
 import org.owpk.utils.Resources;
 import picocli.CommandLine;
 
@@ -41,6 +39,29 @@ public abstract class AbsResolver<E extends Component> implements Resolver<E> {
     public AbsResolver(String[] args, String name) {
         this.configName = name;
         this.args = args;
+    }
+
+    @Override
+    public void resolve(List<E> list) {
+        try {
+            CommandLine.ParseResult parseResult = new CommandLine(this).parseArgs(args);
+            Composite<E> composite = new Composite<>(list);
+            if (defaultPrintPattern)
+                Resources.ConfigReader.getProps().setProperty("format", "%s : %s\n");
+            composite.useDelimiter(delimiter);
+            if (configJson) {
+                JsonConfig cfg = Resources.ConfigReader.getJsonConfig(configName);
+                composite.doFilter(cfg);
+                composite.execute(cfg);
+            }
+            else {
+                composite.doFilter(parseFilterOptions());
+                composite.execute(getOptionList());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getLocalizedMessage());
+        }
     }
 
     protected List<String> getOptionList() {
