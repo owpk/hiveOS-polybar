@@ -19,7 +19,8 @@ import java.util.stream.Collectors;
 @ToString
 public class TokenManager {
    private static final Logger log = LogManager.getLogger(TokenManager.class);
-   private final String TEMP_FILE = Resources.CURRENT_DIR + "/tmp";
+   private final String TEMP_FILE = Resources.CURRENT_DIR + "/.tmp";
+   private static final String errMsg = "Auth error, try to run app with -a option";
 
    public void writeToken(String token, Integer tokenExpiration) {
       File temp = new File(TEMP_FILE);
@@ -31,7 +32,7 @@ public class TokenManager {
          writer.write(tokenExpiration + "@");
          writer.write(dayX + "@");
       } catch (IOException e) {
-         log.log(Resources.getLevel(), e);
+         log.error(e);
       } finally {
          temp.setWritable(false);
          temp.setReadable(false);
@@ -55,7 +56,7 @@ public class TokenManager {
       if (dayX + tokenExpirationTime > currentTime) {
          return true;
       }
-      System.out.println("AccessTokenExpired");
+      System.out.println(errMsg);
       return false;
    }
 
@@ -68,8 +69,8 @@ public class TokenManager {
                 .split("@"))
                 .collect(Collectors.toList());
       } catch (IOException e) {
-         System.out.println("AuthError try --debug");
-         log.log(Resources.getLevel(), e);
+         System.out.println(errMsg);
+         log.error(e);
       } finally {
          temp.setReadable(false);
       }

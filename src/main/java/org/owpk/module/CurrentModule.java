@@ -30,7 +30,7 @@ public class CurrentModule implements Module {
    private final Properties properties;
 
    public CurrentModule() {
-      properties = Resources.ConfigReader.getProps();
+      properties = Resources.ConfigReader.getProperties();
       auth = new AuthController();
       wallet = new WalletController();
       tokenManager = new TokenManager();
@@ -46,8 +46,11 @@ public class CurrentModule implements Module {
                    (Integer) response.getBody().getObject().get("expires_in"));
          }
          System.out.printf("Auth: %s, Status code: %d\n", response.getStatusText(), response.getStatus());
+         log.info(response.getHeaders());
+         log.info(response.getStatus());
+         log.info(response.getBody());
       } catch (IOException | UnirestException e) {
-         log.log(Resources.getLevel(), e);
+         log.error(e);
       }
    }
 
@@ -67,8 +70,11 @@ public class CurrentModule implements Module {
             } else {
                resolver.printError(response.getBody(), response.getStatus());
             }
+            log.info(response.getHeaders());
+            log.info(response.getStatus());
+            log.info(response.getBody());
          } catch (UnirestException e) {
-            log.log(Resources.getLevel(), e);
+            log.error(e);
          }
       }
    }

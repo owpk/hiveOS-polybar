@@ -37,7 +37,7 @@ public abstract class AbsComponent implements Component {
       Map<String, Object> objGraph = JsonMapper.convert(this, LinkedHashMap.class);
       objGraph.forEach((k, v) -> {
          if (jsonConfig.getFieldsToShow().contains(k))
-            System.out.printf((String) Resources.ConfigReader.getProps().get("format"), k, v);
+            System.out.printf((String) Resources.ConfigReader.getProperties().get("format"), k, v);
       });
    }
 
@@ -52,14 +52,12 @@ public abstract class AbsComponent implements Component {
 
    }
 
-   ;
-
    protected void defaultOutput(String key, Object value) {
-      System.out.printf(Resources.ConfigReader.getProps().getProperty("format"), key, value);
+      System.out.printf(Resources.ConfigReader.getProperties().getProperty("format"), key, value);
    }
 
    /**
-    * divides the statement "object1:obj1_field1:obj1_field2,..."
+    * parse the statement "object1:obj1_field1:obj1_field2,..."
     */
    protected List<String> parseInheritedOptions(List<String> options, Predicate<String> predicate) {
       return Arrays.stream(

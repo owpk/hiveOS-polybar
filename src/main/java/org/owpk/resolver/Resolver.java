@@ -39,9 +39,6 @@ public class Resolver<E extends Component> {
    @CommandLine.Option(names = {"-c", "--config"})
    protected boolean configJson;
 
-   @CommandLine.Option(names = "--debug")
-   protected boolean debug;
-
    protected String[] args;
 
    public Resolver(String[] args, String name) {
@@ -51,10 +48,12 @@ public class Resolver<E extends Component> {
 
    public void resolve(List<E> list) {
       try {
-         if (debug) Resources.setLevel(Level.ERROR);
-         if (defaultPrintPattern) Resources.ConfigReader.getProps().setProperty("format", "%s : %s\n");
-
          CommandLine.ParseResult parseResult = new CommandLine(this).parseArgs(args);
+         log.info(parseResult.originalArgs());
+
+         if (defaultPrintPattern)
+            Resources.ConfigReader.getProperties().setProperty("format", "%s : %s\n");
+
          Composite<E> composite = new Composite<>(list);
          composite.useDelimiter(delimiter);
 
@@ -67,7 +66,7 @@ public class Resolver<E extends Component> {
             composite.execute(getOptionList());
          }
       } catch (Exception e) {
-         log.log(Resources.getLevel(), e);
+         log.error(e);
       }
    }
 

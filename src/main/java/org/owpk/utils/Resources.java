@@ -1,6 +1,8 @@
 package org.owpk.utils;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,15 +26,6 @@ public class Resources {
    public static final String API_TARGET = API_PROTOCOL + API_HOST + API_BASE_PATH;
    public static final String HOME = System.getProperty("user.home");
    public static File CURRENT_DIR;
-   private static Level level = Level.INFO;
-
-   public static Level getLevel() {
-      return level;
-   }
-
-   public static void setLevel(Level level) {
-      Resources.level = level;
-   }
 
    static {
       try {
@@ -50,7 +43,11 @@ public class Resources {
       private static final String PATH = CURRENT_DIR.getPath();
       private static final String CONFIG_NAME = PATH + "/hiveclient.conf";
       private static final String JSON_CONFIG_NAME = PATH + "/settings.json";
+      @Getter
+      @Setter
       private static Properties properties;
+      @Getter
+      @Setter
       private static JsonData jsonConfigList;
 
       static {
@@ -59,7 +56,10 @@ public class Resources {
             properties = new Properties();
             properties.load(inputStream);
             jsonConfigList = new JsonMapper().readValue(jsonData, JsonData.class);
+            log.info("props loaded: {}", CONFIG_NAME);
+            log.info("json settings loaded: {}", JSON_CONFIG_NAME);
          } catch (IOException e) {
+            System.out.println("Seems there is some problems with configuration files, try to run app with --generate option");
             log.error(e);
          }
       }
@@ -77,14 +77,6 @@ public class Resources {
 
       public static JsonConfig getJsonConfig(JsonConfig jsonConfig, String name) {
          return defaultFilter(jsonConfig.getEntitiesToShow(), name);
-      }
-
-      public static Properties getProps() {
-         return properties;
-      }
-
-      public static JsonData getJsonConfigList() {
-         return jsonConfigList;
       }
    }
 

@@ -27,24 +27,24 @@ public class Composite<T extends Component> implements Component, CliFilter<T>, 
 
    @Override
    public void execute(List<String> options) {
-      String delimiter = (String) Resources.ConfigReader.getProps().get("delimiter");
+      String delimiter = (String) Resources.ConfigReader.getProperties().get("delimiter");
       if (list != null) {
          list.forEach(x -> {
             x.execute(options);
             System.out.print(this.delimiter ? delimiter : "");
          });
-      } else System.out.printf((String) Resources.ConfigReader.getProps().get("format"), "data", "N/A");
+      } else System.out.printf((String) Resources.ConfigReader.getProperties().get("format"), "data", "N/A");
    }
 
    @Override
    public void execute(JsonConfig jsonConfig) {
-      String delimiter = (String) Resources.ConfigReader.getProps().get("delimiter");
+      String delimiter = (String) Resources.ConfigReader.getProperties().get("delimiter");
       if (list != null) {
          list.forEach(x -> {
             x.execute(jsonConfig);
             System.out.print(this.delimiter ? delimiter : "");
          });
-      } else System.out.printf((String) Resources.ConfigReader.getProps().get("format"), "data", "N/A");
+      } else System.out.printf((String) Resources.ConfigReader.getProperties().get("format"), "data", "N/A");
    }
 
    public void useDelimiter(boolean delimiter) {

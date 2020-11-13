@@ -1,37 +1,58 @@
 package org.owpk;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.owpk.entities.apiJson.auth.User;
 import org.owpk.module.CurrentModule;
 import org.owpk.resolver.Resolver;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class App {
 
-   public static void main(String[] args) throws IOException, UnirestException {
+   public static void main(String[] args) {
+      String[] _args = args;
+
+      if (checkIfDebugNeeded(args))
+         _args = getOtherArgs(args, "--debug");
+
       org.owpk.module.Module module = new CurrentModule();
 
-      //TODO Вынести в отедльный класс под управлением picocli
-      switch (args[0]) {
+      switch (_args[0]) {
          case "-a":
             User user = interactiveAuth();
             module.authRequest(user);
             break;
          case "-w":
-            module.walletsRequest(new Resolver<>(getOtherArgs(args), "wallet"));
+            module.walletsRequest(
+                   new Resolver<>(getOtherArgs(_args, "-w"), "wallet"));
             break;
       }
    }
 
-   private static String[] getOtherArgs(String[] args) {
-      final String[] _args = new String[args.length - 1];
-      System.arraycopy(args, 1, _args, 0, args.length - 1);
-      return _args;
+   private static boolean checkIfDebugNeeded(String[] args) {
+      for (String arg: args) {
+         if (arg.equals("--debug")) {
+            Configurator.setRootLevel(Level.ALL);
+            return true;
+         }
+      }
+      return false;
    }
 
-   public static User interactiveAuth() {
+   private static String[] getOtherArgs(String[] args, String argName) {
+      for (int i = 0; i < args.length; i++) {
+         if (args[i].equals(argName)) {
+            String[] _args = new String[args.length - 1];
+            System.arraycopy(args, 0, _args, 0, i);
+            System.arraycopy(args, i + 1, _args, i, _args.length - i);
+            return _args;
+         }
+      }
+      return args;
+   }
+
+   private static User interactiveAuth() {
       User user = new User();
       Scanner sc = new Scanner(System.in);
 
