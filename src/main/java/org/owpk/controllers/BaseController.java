@@ -8,6 +8,17 @@ import org.owpk.utils.Resources;
 
 public class BaseController implements Controller {
 
+   private static BaseController baseController;
+
+   public static BaseController getBaseController() {
+      if (baseController == null)
+         baseController = new BaseController();
+      return baseController;
+   }
+
+   private BaseController() {
+   }
+
    public HttpResponse<JsonNode> getRequest(String resource, String authToken) throws UnirestException {
       return Unirest.get(Resources.API_TARGET + resource)
              .header("accept", "application/json")

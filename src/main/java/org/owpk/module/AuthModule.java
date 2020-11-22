@@ -19,8 +19,8 @@ public class AuthModule {
     private final TokenManager tokenManager;
 
     public AuthModule() {
-        auth = new AuthController();
-        tokenManager = new TokenManager();
+        auth = AuthController.getAuthController();
+        tokenManager = TokenManager.getTokenManager();
     }
 
     public void authRequest(User user) {

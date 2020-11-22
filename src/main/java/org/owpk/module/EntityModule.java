@@ -23,8 +23,8 @@ public class EntityModule {
    private final TokenManager tokenManager;
 
    public EntityModule() {
-      baseController = new BaseController();
-      tokenManager = new TokenManager();
+      baseController = BaseController.getBaseController();
+      tokenManager = TokenManager.getTokenManager();
    }
 
    public <T extends Component> void entityRequest(EntityResolver<T> resolver, String path, Class<T> clazz) {
@@ -41,9 +41,9 @@ public class EntityModule {
             } else {
                resolver.printError(response.getBody(), response.getStatus());
             }
-            log.info(response.getHeaders());
-            log.info(response.getStatus());
-            log.info(response.getBody());
+            log.info("Headers: " + response.getHeaders());
+            log.info("Response status: "+response.getStatus());
+            log.info("Body: " + response.getBody());
          } catch (UnirestException e) {
             log.error(e);
          }

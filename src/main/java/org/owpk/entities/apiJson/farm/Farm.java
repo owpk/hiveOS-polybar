@@ -48,28 +48,19 @@ public class Farm extends AbsComponent {
     private Integer disabled_asics_count;
     @JsonProperty
     @JsonIgnore
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private Owner owner;
     @JsonProperty
     @JsonIgnore
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private Money money;
     @JsonProperty
     @JsonIgnore
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private Stats stats;
     @JsonProperty
     @JsonIgnore
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private List<HashRates> hashrates;
     @JsonProperty
     @JsonIgnore
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private List<HashRatesByCoin> hashrates_by_coin;
     private boolean charge_on_pool;
 
-    @Override
-    public void execute(JsonConfig jsonConfig) {
-        printFieldsToShow(jsonConfig);
-    }
 }

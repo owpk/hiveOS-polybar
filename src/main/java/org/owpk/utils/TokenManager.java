@@ -1,6 +1,5 @@
 package org.owpk.utils;
 
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +14,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor
 @ToString
 public class TokenManager {
    private static final Logger log = LogManager.getLogger(TokenManager.class);
    private final String TEMP_FILE = Resources.CURRENT_DIR + "/.tmp";
    private static final String errMsg = "Auth error, try to run app with -a option";
+   private static TokenManager tokenManager;
+
+   public static TokenManager getTokenManager() {
+      if (tokenManager == null)
+         tokenManager = new TokenManager();
+      return tokenManager;
+   }
+
+   private TokenManager() {
+   }
 
    public void writeToken(String token, Integer tokenExpiration) {
       File temp = new File(TEMP_FILE);

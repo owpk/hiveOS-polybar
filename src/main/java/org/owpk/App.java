@@ -25,6 +25,7 @@ public class App {
 
       AuthModule authModule = new AuthModule();
       EntityModule module = new EntityModule();
+
       JsonAppConfig jsonConfig = Resources.ConfigReader.getJsonConfig().getJsonAppConfig();
       switch (_args[0]) {
          case "-a":

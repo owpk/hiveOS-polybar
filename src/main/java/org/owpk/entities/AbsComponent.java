@@ -21,6 +21,11 @@ public abstract class AbsComponent implements Component {
       objGraph.forEach(defaultBiConsumer(options));
    }
 
+   @Override
+   public void execute(JsonConfig jsonConfig) {
+      printFieldsToShow(jsonConfig);
+   }
+
    protected BiConsumer<String, Object> defaultBiConsumer(List<String> options) {
       return (k, v) -> {
          if (options.size() == 0) {

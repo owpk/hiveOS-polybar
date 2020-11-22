@@ -5,8 +5,4 @@ import org.owpk.entities.jsonConfig.JsonConfig;
 
 public class DefaultFs extends AbsComponent {
 
-    @Override
-    public void execute(JsonConfig jsonConfig) {
-
-    }
 }

@@ -45,7 +45,7 @@ public class Resources {
       static {
          try (FileInputStream jsonData = new FileInputStream(JSON_CONFIG_NAME)) {
             jsonConfig = new JsonMapper().readValue(jsonData, JsonData.class);
-            log.info("json settings loaded: {}", JSON_CONFIG_NAME);
+            log.info("json settings loaded - OK: {}", JSON_CONFIG_NAME);
          } catch (IOException e) {
             System.out.println("Seems there is some problems with configuration file, try to run app with --generate option");
             log.error(e);
