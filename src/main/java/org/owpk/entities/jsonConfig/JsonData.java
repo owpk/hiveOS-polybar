@@ -15,6 +15,8 @@ import java.util.List;
 @JsonAutoDetect
 @ToString
 public class JsonData {
-   @JsonProperty(value = "data")
-   private List<JsonConfig> data;
+   @JsonProperty(value = "entities")
+   private List<JsonConfig> entities;
+   @JsonProperty(value = "app")
+   private JsonAppConfig jsonAppConfig;
 }

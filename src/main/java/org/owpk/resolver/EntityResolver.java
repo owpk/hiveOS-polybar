@@ -1,7 +1,7 @@
 package org.owpk.resolver;
 
 import com.mashape.unirest.http.JsonNode;
-import org.apache.logging.log4j.Level;
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.owpk.entities.Component;
@@ -16,17 +16,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Resolver<E extends Component> {
-   private static final Logger log = LogManager.getLogger(Resolver.class);
+@NoArgsConstructor
+public class EntityResolver<E extends Component> {
+   private static final Logger log = LogManager.getLogger(EntityResolver.class);
    protected String configName;
 
    @CommandLine.Option(names = {"-f", "--filter"},
-          paramLabel = "FILTER",
           description = "filter by json field and value [-f field1:value1,value2;field2:value1,value2;...]")
    protected String filter;
 
    @CommandLine.Option(names = {"-v", "--verbose"},
-          paramLabel = "FILTER",
           description = "filter by json field [-v field1,field2,field3:filed1:field2,field3...] ")
    protected String arguments;
 
@@ -36,29 +35,30 @@ public class Resolver<E extends Component> {
    @CommandLine.Option(names = {"-D", "--default"})
    protected boolean defaultPrintPattern;
 
-   @CommandLine.Option(names = {"-c", "--config"})
+   @CommandLine.Option(names = {"-r", "--raw"})
    protected boolean configJson;
 
    protected String[] args;
 
-   public Resolver(String[] args, String name) {
-      this.configName = name;
+   public EntityResolver(String[] args, String configName) {
+      this.configName = configName;
       this.args = args;
+   }
+
+   public EntityResolver(String configName) {
+      this.configName = configName;
    }
 
    public void resolve(List<E> list) {
       try {
          CommandLine.ParseResult parseResult = new CommandLine(this).parseArgs(args);
          log.info(parseResult.originalArgs());
-
          if (defaultPrintPattern)
-            Resources.ConfigReader.getProperties().setProperty("format", "%s : %s\n");
-
+            Resources.ConfigReader.getJsonConfig().getJsonAppConfig().setFormat("%s : %s\n");
          Composite<E> composite = new Composite<>(list);
          composite.useDelimiter(delimiter);
-
-         if (configJson) {
-            JsonConfig cfg = Resources.ConfigReader.getJsonConfig(configName);
+         if (!configJson) {
+            JsonConfig cfg = Resources.ConfigReader.getJsonConfigProperty(configName);
             composite.doFilter(cfg);
             composite.execute(cfg);
          } else {

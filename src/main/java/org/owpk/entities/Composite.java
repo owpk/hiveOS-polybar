@@ -16,39 +16,41 @@ import java.util.Map;
 @Getter
 @Setter
 public class Composite<T extends Component> implements Component, CliFilter<T>, JsonConfigFilter {
+   private final String format = Resources.ConfigReader.getJsonConfig().getJsonAppConfig().getFormat();
 
    protected List<T> list;
-
    public Composite(List<T> list) {
       this.list = list;
    }
 
-   private boolean delimiter;
+   private boolean del;
 
    @Override
    public void execute(List<String> options) {
-      String delimiter = (String) Resources.ConfigReader.getProperties().get("delimiter");
+      final String delimiter = Resources.ConfigReader.getJsonConfig().getJsonAppConfig().getDelimiter();
+      final String format = Resources.ConfigReader.getJsonConfig().getJsonAppConfig().getFormat();
       if (list != null) {
          list.forEach(x -> {
             x.execute(options);
-            System.out.print(this.delimiter ? delimiter : "");
+            System.out.print(this.del ? delimiter : "");
          });
-      } else System.out.printf((String) Resources.ConfigReader.getProperties().get("format"), "data", "N/A");
+      } else System.out.printf(format, "data", "N/A");
    }
 
    @Override
    public void execute(JsonConfig jsonConfig) {
-      String delimiter = (String) Resources.ConfigReader.getProperties().get("delimiter");
+      final String delimiter = Resources.ConfigReader.getJsonConfig().getJsonAppConfig().getDelimiter();
+      final String format = Resources.ConfigReader.getJsonConfig().getJsonAppConfig().getFormat();
       if (list != null) {
          list.forEach(x -> {
             x.execute(jsonConfig);
-            System.out.print(this.delimiter ? delimiter : "");
+            System.out.print(this.del ? delimiter : "");
          });
-      } else System.out.printf((String) Resources.ConfigReader.getProperties().get("format"), "data", "N/A");
+      } else System.out.printf(format, "data", "N/A");
    }
 
    public void useDelimiter(boolean delimiter) {
-      this.delimiter = delimiter;
+      this.del = delimiter;
    }
 
    @Override

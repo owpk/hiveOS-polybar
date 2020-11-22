@@ -3,9 +3,16 @@ package org.owpk;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.owpk.entities.apiJson.auth.User;
-import org.owpk.module.CurrentModule;
-import org.owpk.resolver.Resolver;
+import org.owpk.entities.apiJson.farm.Farm;
+import org.owpk.entities.apiJson.wallet.Wallet;
+import org.owpk.entities.jsonConfig.JsonAppConfig;
+import org.owpk.entities.jsonConfig.JsonConfig;
+import org.owpk.module.AuthModule;
+import org.owpk.module.EntityModule;
+import org.owpk.resolver.EntityResolver;
+import org.owpk.utils.Resources;
 
+import java.util.Properties;
 import java.util.Scanner;
 
 public class App {
@@ -16,16 +23,21 @@ public class App {
       if (checkIfDebugNeeded(args))
          _args = getOtherArgs(args, "--debug");
 
-      org.owpk.module.Module module = new CurrentModule();
-
+      AuthModule authModule = new AuthModule();
+      EntityModule module = new EntityModule();
+      JsonAppConfig jsonConfig = Resources.ConfigReader.getJsonConfig().getJsonAppConfig();
       switch (_args[0]) {
          case "-a":
             User user = interactiveAuth();
-            module.authRequest(user);
+            authModule.authRequest(user);
             break;
          case "-w":
-            module.walletsRequest(
-                   new Resolver<>(getOtherArgs(_args, "-w"), "wallet"));
+            module.entityRequest(new EntityResolver<>(getOtherArgs(_args, "-w"), "wallet"),
+                    "/farms/" + jsonConfig.getFarmId() + "/wallets", Wallet.class);
+            break;
+         case "-f":
+            module.entityRequest(new EntityResolver<>(getOtherArgs(_args, "-f"),"farm"),
+                    "/farms", Farm.class);
             break;
       }
    }

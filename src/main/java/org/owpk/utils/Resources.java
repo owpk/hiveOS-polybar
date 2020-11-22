@@ -2,8 +2,6 @@ package org.owpk.utils;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.Getter;
-import lombok.Setter;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.owpk.entities.jsonConfig.JsonConfig;
@@ -16,7 +14,6 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Properties;
 
 public class Resources {
    private static final Logger log = LogManager.getLogger(Resources.class);
@@ -41,25 +38,16 @@ public class Resources {
    //TODO autogenerate config
    public static class ConfigReader {
       private static final String PATH = CURRENT_DIR.getPath();
-      private static final String CONFIG_NAME = PATH + "/hiveclient.conf";
       private static final String JSON_CONFIG_NAME = PATH + "/settings.json";
       @Getter
-      @Setter
-      private static Properties properties;
-      @Getter
-      @Setter
-      private static JsonData jsonConfigList;
+      private static JsonData jsonConfig;
 
       static {
-         try (FileInputStream inputStream = new FileInputStream(CONFIG_NAME);
-              FileInputStream jsonData = new FileInputStream(JSON_CONFIG_NAME)) {
-            properties = new Properties();
-            properties.load(inputStream);
-            jsonConfigList = new JsonMapper().readValue(jsonData, JsonData.class);
-            log.info("props loaded: {}", CONFIG_NAME);
+         try (FileInputStream jsonData = new FileInputStream(JSON_CONFIG_NAME)) {
+            jsonConfig = new JsonMapper().readValue(jsonData, JsonData.class);
             log.info("json settings loaded: {}", JSON_CONFIG_NAME);
          } catch (IOException e) {
-            System.out.println("Seems there is some problems with configuration files, try to run app with --generate option");
+            System.out.println("Seems there is some problems with configuration file, try to run app with --generate option");
             log.error(e);
          }
       }
@@ -71,11 +59,11 @@ public class Resources {
                 .orElseThrow(() -> new RuntimeException("check config"));
       }
 
-      public static JsonConfig getJsonConfig(String name) {
-         return defaultFilter(jsonConfigList.getData(), name);
+      public static JsonConfig getJsonConfigProperty(String name) {
+         return defaultFilter(jsonConfig.getEntities(), name);
       }
 
-      public static JsonConfig getJsonConfig(JsonConfig jsonConfig, String name) {
+      public static JsonConfig getJsonConfigProperty(JsonConfig jsonConfig, String name) {
          return defaultFilter(jsonConfig.getEntitiesToShow(), name);
       }
    }

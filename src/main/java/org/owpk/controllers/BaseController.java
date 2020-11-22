@@ -6,7 +6,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.owpk.utils.Resources;
 
-public class WalletController implements Controller {
+public class BaseController implements Controller {
 
    public HttpResponse<JsonNode> getRequest(String resource, String authToken) throws UnirestException {
       return Unirest.get(Resources.API_TARGET + resource)

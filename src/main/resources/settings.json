@@ -1,0 +1,21 @@
+{
+	"app": {
+		"farmId" : "277869",
+		"delimiter" : "---------- \n",
+		"format": "%2$s \""
+	},
+	"entities": [
+		{
+			"objectName" : "wallet",
+			"filterBy" : {"name" : ["ethkraken", "rvnbinance"]},
+			"fieldsToShow" : ["name"],
+			"entitiesToShow" : [{
+                    "objectName" : "pool_balances",
+                    "fieldsToShow" : ["pool", "value_usd"]
+                }]
+		},
+		{
+			"objectName" : "farm",
+			"fieldsToShow" : ["id", "name"]
+		}]
+}

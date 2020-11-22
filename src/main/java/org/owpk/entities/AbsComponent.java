@@ -34,10 +34,11 @@ public abstract class AbsComponent implements Component {
 
    @SuppressWarnings("unchecked")
    protected void printFieldsToShow(JsonConfig jsonConfig) {
+      final String format = Resources.ConfigReader.getJsonConfig().getJsonAppConfig().getFormat();
       Map<String, Object> objGraph = JsonMapper.convert(this, LinkedHashMap.class);
       objGraph.forEach((k, v) -> {
          if (jsonConfig.getFieldsToShow().contains(k))
-            System.out.printf((String) Resources.ConfigReader.getProperties().get("format"), k, v);
+            System.out.printf(format, k, v);
       });
    }
 
@@ -53,7 +54,8 @@ public abstract class AbsComponent implements Component {
    }
 
    protected void defaultOutput(String key, Object value) {
-      System.out.printf(Resources.ConfigReader.getProperties().getProperty("format"), key, value);
+      final String format = Resources.ConfigReader.getJsonConfig().getJsonAppConfig().getFormat();
+      System.out.printf(format, key, value);
    }
 
    /**
