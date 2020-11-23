@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.owpk.entities.jsonConfig.JsonConfig;
 import org.owpk.entities.jsonConfig.JsonConfigFilter;
 import org.owpk.utils.CliFilter;
-import org.owpk.utils.JsonMapper;
 import org.owpk.utils.Resources;
 
 import java.util.Iterator;

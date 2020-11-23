@@ -1,7 +1,6 @@
 package org.owpk.entities;
 
 import org.owpk.entities.jsonConfig.JsonConfig;
-import org.owpk.utils.JsonMapper;
 import org.owpk.utils.Resources;
 
 import java.util.Arrays;

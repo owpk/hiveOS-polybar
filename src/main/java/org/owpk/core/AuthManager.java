@@ -1,4 +1,4 @@
-package org.owpk.module;
+package org.owpk.core;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -8,17 +8,17 @@ import org.apache.logging.log4j.Logger;
 import org.owpk.controllers.AuthController;
 import org.owpk.controllers.Controller;
 import org.owpk.entities.apiJson.auth.User;
-import org.owpk.utils.JsonMapper;
+import org.owpk.entities.JsonMapper;
 import org.owpk.utils.TokenManager;
 
 import java.io.IOException;
 
-public class AuthModule {
-    private static final Logger log = LogManager.getLogger(EntityModule.class);
+public class AuthManager {
+    private static final Logger log = LogManager.getLogger(EntityDataManager.class);
     private final Controller auth;
     private final TokenManager tokenManager;
 
-    public AuthModule() {
+    public AuthManager() {
         auth = AuthController.getAuthController();
         tokenManager = TokenManager.getTokenManager();
     }

@@ -1,4 +1,4 @@
-package org.owpk.module;
+package org.owpk.core;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -9,25 +9,26 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.owpk.controllers.Controller;
 import org.owpk.controllers.BaseController;
+import org.owpk.core.resolver.EntityResolver;
 import org.owpk.entities.Component;
-import org.owpk.resolver.EntityResolver;
-import org.owpk.utils.JsonMapper;
+import org.owpk.entities.JsonMapper;
 import org.owpk.utils.TokenManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityModule {
-   private static final Logger log = LogManager.getLogger(EntityModule.class);
+public class EntityDataManager {
+   private static final Logger log = LogManager.getLogger(EntityDataManager.class);
    private final Controller baseController;
    private final TokenManager tokenManager;
 
-   public EntityModule() {
+   public EntityDataManager() {
       baseController = BaseController.getBaseController();
       tokenManager = TokenManager.getTokenManager();
    }
 
-   public <T extends Component> void entityRequest(EntityResolver<T> resolver, String path, Class<T> clazz) {
+   public <T extends Component> void entityRequest(String[] args, String path, Class<T> clazz) {
+      final EntityResolver<T> resolver = new EntityResolver<>(args, clazz.getSimpleName().toLowerCase());
       if (tokenManager.checkIfExpired()) {
          try {
             HttpResponse<JsonNode> response = baseController.getRequest(

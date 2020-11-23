@@ -1,4 +1,4 @@
-package org.owpk.utils;
+package org.owpk.entities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
