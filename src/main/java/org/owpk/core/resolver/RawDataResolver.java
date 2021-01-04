@@ -3,6 +3,9 @@ package org.owpk.core.resolver;
 import picocli.CommandLine;
 
 public class RawDataResolver extends AbsResolver<String> {
+    @CommandLine.Option(names = {"-p", "--pretty"},
+            description = "pretty output")
+    private boolean pretty;
     private int pos;
     private char[] chars;
 

@@ -8,7 +8,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="hiveOSPolybarModule" />
-        <module name="hivecli" />
+        <module name="core" />
+        <module name="services" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
